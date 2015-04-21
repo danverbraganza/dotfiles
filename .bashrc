@@ -128,4 +128,7 @@ alias set_gopath='export GOPATH=$(pwd)'
 export EDITOR=emacs
 export GOPATH=~/projects/go
 export WORKDIR=$HOME/Hipmunk
+
+
 alias hmsh='docker exec -it hipmunk_hipmunk_1 /bin/bash'
+alias hmff='docker exec -it hipmunk_hipmunk_1 python -m hipmunk.ff --debug'
