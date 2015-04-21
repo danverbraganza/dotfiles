@@ -127,3 +127,5 @@ export PATH=$PATH:/usr/local/go/bin:$ANDROID_HOME/tools:$ANDROID_HOME/platform-t
 alias set_gopath='export GOPATH=$(pwd)'
 export EDITOR=emacs
 export GOPATH=~/projects/go
+export WORKDIR=$HOME/Hipmunk
+alias hmsh='docker exec -it hipmunk_hipmunk_1 /bin/bash'
