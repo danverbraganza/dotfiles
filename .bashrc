@@ -128,6 +128,10 @@ alias set_gopath='export GOPATH=$(pwd)'
 export EDITOR=emacs
 export GOPATH=~/projects/go
 export WORKDIR=$HOME/Hipmunk
+IGNORED()
+{
+    echo IGNORED $@
+}
 
 
 alias hmsh='docker exec -it hipmunk_hipmunk_1 /bin/bash'
