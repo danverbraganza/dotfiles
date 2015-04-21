@@ -378,3 +378,9 @@ end)
 client.add_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.add_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
+
+
+awful.util.spawn_with_shell("gnome-do")
+awful.util.spawn_with_shell("nm-applet")
+awful.util.spawn_with_shell("gnome-sound-applet")
+awful.util.spawn_with_shell("udiskie --tray")
