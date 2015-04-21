@@ -63,8 +63,7 @@
 
 (put 'set-goal-column 'disabled nil)
 
-; Then run:                                                                                                                            ; pushd /usr/local/share/emacs/site-lisp/                                                                                              ; sudo wget https://raw.github.com/yoshiki/yaml-mode/master/yaml-mode.el                                                               ; sudo wget https://raw.github.com/michaelklishin/cucumber.el/master/feature-mode.el                                                   ; sudo pip install pyflakes                                                                                                            ; sudo wget http://www.emacswiki.org/emacs/download/flymake-cursor.el                                                                  ; sudo wget https://launchpad.net/python-mode/trunk/6.0.10/+download/python-mode.el-6.0.10.tar.gz                                      ; sudo tar -xzvf python-mode.el-6.0.10.tar
-; sudo wget http://golang.org/misc/emacs/go-mode.el?m=text -O go-mode.el
+; Then run:                                                                                                                            ; pushd /usr/local/share/emacs/site-lisp/                                                                                              ; sudo wget https://raw.github.com/yoshiki/yaml-mode/master/yaml-mode.el                                                               ; sudo wget https://raw.github.com/michaelklishin/cucumber.el/master/feature-mode.el                                                   ; sudo pip install pyflakes                                                                                                            ; sudo wget http://www.emacswiki.org/emacs/download/flymake-cursor.el                                                                  ; sudo wget https://launchpad.net/python-mode/trunk/6.0.10/+download/python-mode.el-6.0.10.tar.gz                                      ; sudo tar -xzvf python-mode.el-6.0.10.tar.gz
 ; sudo wget http://protobuf.googlecode.com/svn/trunk/editors/protobuf-mode.el
 ; sudo git clone https://github.com/gabrielelanaro/emacs-for-python.git
 ; sudo git clone https://github.com/dominikh/go-mode.el.git
@@ -86,5 +85,9 @@
  '(flymake-errline ((((class color)) (:background "dark magenta"))))
  '(flymake-warnline ((((class color)) (:background "grey30"))))
  '(flymake-infoline ((((class color)) (:background "grey15")))))
+
+(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+                         ("marmalade" . "https://marmalade-repo.org/packages/")
+                         ("melpa" . "http://melpa.org/packages/")))
 
 (setq skeleton-pair nil)
