@@ -133,6 +133,12 @@ IGNORED()
     echo IGNORED $@
 }
 
-
+hmup()
+{
+    pushd ~/Hipmunk/
+    docker-compose up hipmunk
+    popd
+}
 alias hmsh='docker exec -it hipmunk_hipmunk_1 /bin/bash'
 alias hmff='docker exec -it hipmunk_hipmunk_1 python -m hipmunk.ff --debug'
+alias add_screen='xrandr --output VGA1 --mode 2048x1152 --above eDP1'
