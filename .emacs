@@ -63,11 +63,19 @@
 
 (put 'set-goal-column 'disabled nil)
 
-; Then run:                                                                                                                            ; pushd /usr/local/share/emacs/site-lisp/                                                                                              ; sudo wget https://raw.github.com/yoshiki/yaml-mode/master/yaml-mode.el                                                               ; sudo wget https://raw.github.com/michaelklishin/cucumber.el/master/feature-mode.el                                                   ; sudo pip install pyflakes                                                                                                            ; sudo wget http://www.emacswiki.org/emacs/download/flymake-cursor.el                                                                  ; sudo wget https://launchpad.net/python-mode/trunk/6.0.10/+download/python-mode.el-6.0.10.tar.gz                                      ; sudo tar -xzvf python-mode.el-6.0.10.tar.gz
+; Then run:
+; pushd /usr/local/share/emacs/site-lisp/
+; sudo wget https://raw.github.com/yoshiki/yaml-mode/master/yaml-mode.el
+; sudo wget https://raw.github.com/michaelklishin/cucumber.el/master/feature-mode.el
+; sudo pip install pyflakes
+; sudo wget http://www.emacswiki.org/emacs/download/flymake-cursor.el
+; sudo wget https://launchpad.net/python-mode/trunk/6.0.10/+download/python-mode.el-6.0.10.tar.gz
+; sudo tar -xzvf python-mode.el-6.0.10.tar.gz
 ; sudo wget http://protobuf.googlecode.com/svn/trunk/editors/protobuf-mode.el
 ; sudo git clone https://github.com/gabrielelanaro/emacs-for-python.git
 ; sudo git clone https://github.com/dominikh/go-mode.el.git
 ; sudo git clone https://github.com/dougm/goflymake.git
+; M-x package-install [RET] coffee-mode [RET]
 
 (custom-set-variables
   ;; custom-set-variables was added by Custom.
