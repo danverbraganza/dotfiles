@@ -57,7 +57,7 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]$(__git_ps1 " (%s)")\$ '
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
@@ -142,3 +142,4 @@ hmup()
 alias hmsh='docker exec -it hipmunk_hipmunk_1 /bin/bash'
 alias hmff='docker exec -it hipmunk_hipmunk_1 python -m hipmunk.ff --debug'
 alias add_screen='xrandr --output VGA1 --mode 2048x1152 --above eDP1'
+alias node='nodejs'
