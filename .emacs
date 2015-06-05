@@ -98,5 +98,9 @@
                          ("marmalade" . "https://marmalade-repo.org/packages/")
                          ("melpa" . "http://melpa.org/packages/")))
 
+(require 'py-autopep8)
+(add-hook 'python-mode-hook 'py-autopep8-enable-on-save)
+(setq py-autopep8-options '("--ignore=E712"))
+
 (setq skeleton-pair nil)
 (custom-set-variables '(coffee-tab-width 4))

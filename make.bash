@@ -28,3 +28,5 @@ for file in $files; do
     echo "Creating symlink to $file in home directory."
     ln -s ~/dotfiles/$file ~/$file
 done
+
+ln -s ~/dotfiles/site-lisp /usr/local/share/emacs/site-lisp
