@@ -11,7 +11,7 @@
 ########## Variables
 
 olddir=~/dotfiles_old             # old dotfiles backup directory
-files=".bashrc .emacs .gitignore .agignore .config/awesome/rc.lua git-prompt.sh" # list of files/folders to symlink in homedir
+files=".bashrc .emacs .gitignore .agignore .config/awesome/rc.lua git-prompt.sh .inputrc" # list of files/folders to symlink in homedir
 
 ##########
 
