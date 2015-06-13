@@ -123,10 +123,10 @@ GITHUB_USERNAME=danverbraganza
 ulimit -u 1000
 
 export ANDROID_HOME=/usr/local/android/sdk
-export PATH=$PATH:/usr/local/go/bin:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
+export GOPATH=~/projects/go
+export PATH=$PATH:/usr/local/go/bin:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$GOPATH/bin
 alias set_gopath='export GOPATH=$(pwd)'
 export EDITOR=emacs
-export GOPATH=~/projects/go
 export WORKDIR=$HOME/Hipmunk
 IGNORED()
 {
