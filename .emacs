@@ -75,6 +75,8 @@
 ; sudo git clone https://github.com/gabrielelanaro/emacs-for-python.git
 ; sudo git clone https://github.com/dominikh/go-mode.el.git
 ; sudo git clone https://github.com/dougm/goflymake.git
+; sudo pip install autopep8
+; sudo wget https://raw.githubusercontent.com/paetzke/py-autopep8.el/master/py-autopep8.el
 ; M-x package-install [RET] coffee-mode [RET]
 
 (custom-set-variables
