@@ -75,6 +75,8 @@
 ; sudo git clone https://github.com/gabrielelanaro/emacs-for-python.git
 ; sudo git clone https://github.com/dominikh/go-mode.el.git
 ; sudo git clone https://github.com/dougm/goflymake.git
+; sudo pip install autopep8
+; sudo wget https://raw.githubusercontent.com/paetzke/py-autopep8.el/master/py-autopep8.el
 ; M-x package-install [RET] coffee-mode [RET]
 
 (custom-set-variables
@@ -109,3 +111,6 @@
 
 (global-set-key [f3] 'flymake-display-err-menu-for-current-line)
 (global-set-key [f4] 'flymake-goto-next-error)
+
+(fset 'new-python-bin
+   "import logging\C-m\C-mfrom tornado import gen\C-mfrom tornado.options import define\C-m\C-mfrom hipmunk.lib import start\C-mfrom hipmunk.options import options, remaining_options\C-m\C-m\C-m@start.ioloop\C-mdef main(ioloop, *args):\C-mtry:\C-m#insert code here\C-m\C-mfinally:\C-mreturn ioloop.stop()\C-m\C-m\C-m\C-m\C-?\C-?\C-?\C-?if __name__ == '__main__':\C-mmain(*remaining_options)\C-m")
