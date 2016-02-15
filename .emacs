@@ -105,5 +105,7 @@
 (setq skeleton-pair nil)
 (custom-set-variables '(coffee-tab-width 4))
 
+(gofmt-before-save)
+
 (global-set-key [f3] 'flymake-display-err-menu-for-current-line)
 (global-set-key [f4] 'flymake-goto-next-error)
