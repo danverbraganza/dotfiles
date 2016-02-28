@@ -154,4 +154,4 @@ export GIT_PS1_SHOWUPSTREAM="auto"
 HIPBASE="$HOME/Hipmunk"
 HIPMANAGEDIR="$HOME/hipmanage"
 HIPLINUX="true"
-. ~/Hipmunk/install/hiprc
+[ -z ~/Hipmunk/install/hiprc ] && . ~/Hipmunk/install/hiprc
