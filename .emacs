@@ -48,7 +48,10 @@
 (require 'python-mode)
 
 (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/go-mode.el/")
+(setq gofmt-command "goimports")
 (require 'go-mode-autoloads)
+(add-hook 'before-save-hook 'gofmt-before-save)
+
 
 (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/goflymake")
 (require 'go-flymake)
@@ -73,7 +76,6 @@
 ; sudo tar -xzvf python-mode.el-6.0.10.tar.gz
 ; sudo wget http://protobuf.googlecode.com/svn/trunk/editors/protobuf-mode.el
 ; sudo git clone https://github.com/gabrielelanaro/emacs-for-python.git
-; sudo git clone https://github.com/dominikh/go-mode.el.git
 ; sudo git clone https://github.com/dougm/goflymake.git
 ; sudo pip install autopep8
 ; sudo wget https://raw.githubusercontent.com/paetzke/py-autopep8.el/master/py-autopep8.el
