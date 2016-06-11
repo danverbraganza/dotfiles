@@ -44,7 +44,7 @@ If there is a problem, please set it to nil.")
      (if it ,then-form ,@else-forms)))
 
 (defun popup-x-to-string (x)
-  "Convert any object to string effeciently.
+  "Convert any object to string efficiently.
 This is faster than prin1-to-string in many cases."
   (typecase x
     (string x)

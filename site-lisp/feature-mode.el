@@ -610,9 +610,9 @@ are loaded on startup.  If nil, don't load snippets.")
                   (let ((file (format "%s/%s" root (match-string 1 file-and-line)))
                         (line-no (string-to-number (match-string 2 file-and-line))))
                     (funcall action root file line-no))
-                (message "An error occured: \n%s" result)))
+                (message "An error occurred: \n%s" result)))
           (message "No matching steps found for:\n%s" input))
-      (message "An error occured: \n%s" result))))
+      (message "An error occurred: \n%s" result))))
 
 (defun feature-goto-step-definition ()
   "Goto the step-definition under (point).  Requires ruby."

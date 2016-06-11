@@ -2020,7 +2020,7 @@ not need to be a real mode."
                             (rest keymap))))
 
 (defun yas/define-menu (mode menu omit-items)
-  "Define a snippet menu for MODE according to MENU, ommitting OMIT-ITEMS.
+  "Define a snippet menu for MODE according to MENU, omitting OMIT-ITEMS.
 
 MENU is a list, its elements can be:
 

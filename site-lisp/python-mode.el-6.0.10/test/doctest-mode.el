@@ -788,7 +788,7 @@ QUOTES -- A list of (START . END) pairs for all quotation strings.
 (defun doctest-current-source-line-margin ()
   "Return the pre-prompt margin to use for this source line.  This is
 copied from the most recent source line, or set to
-`doctest-default-margin' if there are no preceeding source lines."
+`doctest-default-margin' if there are no preceding source lines."
   (save-excursion
     (save-restriction
       (when (doctest-in-mmm-docstring-overlay)
@@ -805,7 +805,7 @@ copied from the most recent source line, or set to
            doctest-default-margin))))
 
 (defun doctest-electric-backspace ()
-  "Delete the preceeding character, level of indentation, or
+  "Delete the preceding character, level of indentation, or
 prompt.  
 
 If point is at the leftmost column, delete the preceding newline.
@@ -822,11 +822,11 @@ prompt (converting the line to an output line or text line).
 Otherwise, if point is at the first non-whitespace character of a
 line, the delete the line's indentation.
 
-Otherwise, delete the preceeding character.
+Otherwise, delete the preceding character.
 "
   (interactive "*")
   (cond 
-   ;; Beginning of line: delete preceeding newline.
+   ;; Beginning of line: delete preceding newline.
    ((bolp) (backward-delete-char 1))
       
    ;; First non-ws char following prompt: dedent or remove prompt.
@@ -1163,7 +1163,7 @@ correspond to a failed example."
     (setq doctest-example-markers filtered)))
                        
 (defun doctest-prev-example-marker ()
-  "Helper for doctest-replace-output: move to the preceeding example
+  "Helper for doctest-replace-output: move to the preceding example
 marker, and return the corresponding 'original' lineno.  If none is
 found, return nil."
   (let ((lineno nil)

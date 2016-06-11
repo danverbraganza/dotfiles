@@ -168,7 +168,7 @@ class Protocol:
     # All exec's and eval's triggered from the Emacs side are all executed
     # within the "loop" method below, so all user context is kept as
     # local variables within this single routine.  Different instances
-    # of this Protocol class would yield independant evaluation contexts.
+    # of this Protocol class would yield independent evaluation contexts.
     # But in the usual case, there is only one such instance kept within a
     # Lisp_Interface instance, and the "lisp" global variable within this
     # module holds such a Lisp_Interface instance.

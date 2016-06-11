@@ -346,7 +346,7 @@ the list, or call it in your handlers.")
                         ;;
                         ;; Apropos this class, see Issues 18, 25 and
                         ;; elisp info node "35.2.1 Table of Syntax
-                        ;; Classes". The fact that it supresses
+                        ;; Classes". The fact that it suppresses
                         ;; syntatic properties in the delimited region
                         ;; dictates that deciding to autopair/autoskip
                         ;; can't really be as clean as the string
