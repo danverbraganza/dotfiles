@@ -67,7 +67,7 @@
   )
 
 ;;=========================================================
-;; Flymake additions, I have to put this one somwhere else?
+;; Flymake additions, I have to put this one somewhere else?
 ;;=========================================================
 
 (defun flymake-create-temp-in-system-tempdir (filename prefix)

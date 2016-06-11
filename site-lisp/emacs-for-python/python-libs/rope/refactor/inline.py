@@ -351,7 +351,7 @@ class _DefinitionGenerator(object):
         if definition_info.args_arg is not None or \
            definition_info.keywords_arg is not None:
             raise rope.base.exceptions.RefactoringError(
-                'Cannot inline functions with list and keyword arguements.')
+                'Cannot inline functions with list and keyword arguments.')
         if self.pyfunction.get_kind() == 'classmethod':
             paramdict[definition_info.args_with_defaults[0][0]] = \
                 self.pyfunction.parent.get_name()

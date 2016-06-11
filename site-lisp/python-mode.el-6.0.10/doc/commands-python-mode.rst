@@ -1704,8 +1704,8 @@ py-execute-region
 -----------------
 Send the region to a Python interpreter.
 
-When called with M-x univeral-argument, execution through `default-value' of `py-shell-name' is forced.
-When called with M-x univeral-argument followed by a number different from 4 and 1, user is prompted to specify a shell. This might be the name of a system-wide shell or include the path to a virtual environment.
+When called with M-x universal-argument, execution through `default-value' of `py-shell-name' is forced.
+When called with M-x universal-argument followed by a number different from 4 and 1, user is prompted to specify a shell. This might be the name of a system-wide shell or include the path to a virtual environment.
 
 When called from a programm, it accepts a string specifying a shell which will be forced upon execute as argument.
 
@@ -1721,8 +1721,8 @@ py-execute-region-dedicated
 ---------------------------
 Get the region processed by an unique Python interpreter.
 
-When called with M-x univeral-argument, execution through `default-value' of `py-shell-name' is forced.
-When called with M-x univeral-argument followed by a number different from 4 and 1, user is prompted to specify a shell. This might be the name of a system-wide shell or include the path to a virtual environment.
+When called with M-x universal-argument, execution through `default-value' of `py-shell-name' is forced.
+When called with M-x universal-argument followed by a number different from 4 and 1, user is prompted to specify a shell. This might be the name of a system-wide shell or include the path to a virtual environment.
 
 When called from a programm, it accepts a string specifying a shell which will be forced upon execute as argument. 
 
@@ -1783,7 +1783,7 @@ named file instead of the buffer's file.
 
 If a clipping restriction is in effect, only the accessible portion of the buffer is sent. A trailing newline will be supplied if needed.
 
-With M-x univeral-argument user is prompted to specify another then default shell.
+With M-x universal-argument user is prompted to specify another then default shell.
 See also `M-x py-execute-region'. 
 
 py-execute-buffer-switch
@@ -1795,7 +1795,7 @@ named file instead of the buffer's file.
 If there is a *Python* process buffer, it is used.
 If a clipping restriction is in effect, only the accessible portion of the buffer is sent. A trailing newline will be supplied if needed.
 
-With M-x univeral-argument user is prompted to specify another then default shell.
+With M-x universal-argument user is prompted to specify another then default shell.
 See also `M-x py-execute-region'. 
 
 py-execute-buffer-dedicated-switch
@@ -1808,15 +1808,15 @@ named file instead of the buffer's file.
 
 If a clipping restriction is in effect, only the accessible portion of the buffer is sent. A trailing newline will be supplied if needed.
 
-With M-x univeral-argument user is prompted to specify another then default shell.
+With M-x universal-argument user is prompted to specify another then default shell.
 See also `M-x py-execute-region'. 
 
 py-execute-buffer
 -----------------
 Send the contents of the buffer to a Python interpreter.
 
-When called with M-x univeral-argument, execution through `default-value' of `py-shell-name' is forced.
-When called with M-x univeral-argument followed by a number different from 4 and 1, user is prompted to specify a shell. This might be the name of a system-wide shell or include the path to a virtual environment.
+When called with M-x universal-argument, execution through `default-value' of `py-shell-name' is forced.
+When called with M-x universal-argument followed by a number different from 4 and 1, user is prompted to specify a shell. This might be the name of a system-wide shell or include the path to a virtual environment.
 
 If the file local variable `py-master-file' is non-nil, execute the
 named file instead of the buffer's file.
@@ -1836,7 +1836,7 @@ named file instead of the buffer's file.
 If there is a *Python* process buffer, it is used.
 If a clipping restriction is in effect, only the accessible portion of the buffer is sent. A trailing newline will be supplied if needed.
 
-With M-x univeral-argument user is prompted to specify another then default shell.
+With M-x universal-argument user is prompted to specify another then default shell.
 See also `M-x py-execute-region'. 
 
 py-execute-defun
@@ -1863,10 +1863,10 @@ py-execute-statement
 --------------------
 Send statement at point to a Python interpreter.
 
-When called with M-x univeral-argument, execution through `default-value' of `py-shell-name' is forced.
+When called with M-x universal-argument, execution through `default-value' of `py-shell-name' is forced.
 See also `py-force-py-shell-name-p'.
 
-When called with M-x univeral-argument followed by a number different from 4 and 1, user is prompted to specify a shell. This might be the name of a system-wide shell or include the path to a virtual environment.
+When called with M-x universal-argument followed by a number different from 4 and 1, user is prompted to specify a shell. This might be the name of a system-wide shell or include the path to a virtual environment.
 
 When called from a programm, it accepts a string specifying a shell which will be forced upon execute as argument.
 
@@ -1876,10 +1876,10 @@ py-execute-block
 ----------------
 Send block at point to a Python interpreter.
 
-When called with M-x univeral-argument, execution through `default-value' of `py-shell-name' is forced.
+When called with M-x universal-argument, execution through `default-value' of `py-shell-name' is forced.
 See also `py-force-py-shell-name-p'.
 
-When called with M-x univeral-argument followed by a number different from 4 and 1, user is prompted to specify a shell. This might be the name of a system-wide shell or include the path to a virtual environment.
+When called with M-x universal-argument followed by a number different from 4 and 1, user is prompted to specify a shell. This might be the name of a system-wide shell or include the path to a virtual environment.
 
 When called from a programm, it accepts a string specifying a shell which will be forced upon execute as argument.
 
@@ -1889,10 +1889,10 @@ py-execute-block-or-clause
 --------------------------
 Send block-or-clause at point to a Python interpreter.
 
-When called with M-x univeral-argument, execution through `default-value' of `py-shell-name' is forced.
+When called with M-x universal-argument, execution through `default-value' of `py-shell-name' is forced.
 See also `py-force-py-shell-name-p'.
 
-When called with M-x univeral-argument followed by a number different from 4 and 1, user is prompted to specify a shell. This might be the name of a system-wide shell or include the path to a virtual environment.
+When called with M-x universal-argument followed by a number different from 4 and 1, user is prompted to specify a shell. This might be the name of a system-wide shell or include the path to a virtual environment.
 
 When called from a programm, it accepts a string specifying a shell which will be forced upon execute as argument.
 
@@ -1902,10 +1902,10 @@ py-execute-def
 --------------
 Send def at point to a Python interpreter.
 
-When called with M-x univeral-argument, execution through `default-value' of `py-shell-name' is forced.
+When called with M-x universal-argument, execution through `default-value' of `py-shell-name' is forced.
 See also `py-force-py-shell-name-p'.
 
-When called with M-x univeral-argument followed by a number different from 4 and 1, user is prompted to specify a shell. This might be the name of a system-wide shell or include the path to a virtual environment.
+When called with M-x universal-argument followed by a number different from 4 and 1, user is prompted to specify a shell. This might be the name of a system-wide shell or include the path to a virtual environment.
 
 When called from a programm, it accepts a string specifying a shell which will be forced upon execute as argument.
 
@@ -1915,10 +1915,10 @@ py-execute-class
 ----------------
 Send class at point to a Python interpreter.
 
-When called with M-x univeral-argument, execution through `default-value' of `py-shell-name' is forced.
+When called with M-x universal-argument, execution through `default-value' of `py-shell-name' is forced.
 See also `py-force-py-shell-name-p'.
 
-When called with M-x univeral-argument followed by a number different from 4 and 1, user is prompted to specify a shell. This might be the name of a system-wide shell or include the path to a virtual environment.
+When called with M-x universal-argument followed by a number different from 4 and 1, user is prompted to specify a shell. This might be the name of a system-wide shell or include the path to a virtual environment.
 
 When called from a programm, it accepts a string specifying a shell which will be forced upon execute as argument.
 
@@ -1928,10 +1928,10 @@ py-execute-def-or-class
 -----------------------
 Send def-or-class at point to a Python interpreter.
 
-When called with M-x univeral-argument, execution through `default-value' of `py-shell-name' is forced.
+When called with M-x universal-argument, execution through `default-value' of `py-shell-name' is forced.
 See also `py-force-py-shell-name-p'.
 
-When called with M-x univeral-argument followed by a number different from 4 and 1, user is prompted to specify a shell. This might be the name of a system-wide shell or include the path to a virtual environment.
+When called with M-x universal-argument followed by a number different from 4 and 1, user is prompted to specify a shell. This might be the name of a system-wide shell or include the path to a virtual environment.
 
 When called from a programm, it accepts a string specifying a shell which will be forced upon execute as argument.
 
@@ -1941,10 +1941,10 @@ py-execute-expression
 ---------------------
 Send expression at point to a Python interpreter.
 
-When called with M-x univeral-argument, execution through `default-value' of `py-shell-name' is forced.
+When called with M-x universal-argument, execution through `default-value' of `py-shell-name' is forced.
 See also `py-force-py-shell-name-p'.
 
-When called with M-x univeral-argument followed by a number different from 4 and 1, user is prompted to specify a shell. This might be the name of a system-wide shell or include the path to a virtual environment.
+When called with M-x universal-argument followed by a number different from 4 and 1, user is prompted to specify a shell. This might be the name of a system-wide shell or include the path to a virtual environment.
 
 When called from a programm, it accepts a string specifying a shell which will be forced upon execute as argument.
 
@@ -1954,10 +1954,10 @@ py-execute-partial-expression
 -----------------------------
 Send partial-expression at point to a Python interpreter.
 
-When called with M-x univeral-argument, execution through `default-value' of `py-shell-name' is forced.
+When called with M-x universal-argument, execution through `default-value' of `py-shell-name' is forced.
 See also `py-force-py-shell-name-p'.
 
-When called with M-x univeral-argument followed by a number different from 4 and 1, user is prompted to specify a shell. This might be the name of a system-wide shell or include the path to a virtual environment.
+When called with M-x universal-argument followed by a number different from 4 and 1, user is prompted to specify a shell. This might be the name of a system-wide shell or include the path to a virtual environment.
 
 When called from a programm, it accepts a string specifying a shell which will be forced upon execute as argument.
 
@@ -1975,7 +1975,7 @@ py-down-exception
 -----------------
 Go to the next line down in the traceback.
 
-With M-x univeral-argument (programmatically, optional argument
+With M-x universal-argument (programmatically, optional argument
 BOTTOM), jump to the bottom (innermost) exception in the exception
 stack.
 

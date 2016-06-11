@@ -13,7 +13,7 @@ After installing the package (it's a matter of load-file), fire up emacs.
 Starting
 --------
 
-To open a new file you can proceed as usual, with the `C-x C-f` keystrokes, you would see the ido-mode prompt with fuzzy completion enabled, it's fairly intuitive, type some keywords and you will be searching throught files. It remembers your choices and prompt you for the most used files.
+To open a new file you can proceed as usual, with the `C-x C-f` keystrokes, you would see the ido-mode prompt with fuzzy completion enabled, it's fairly intuitive, type some keywords and you will be searching thought files. It remembers your choices and prompt you for the most used files.
 
 Editing
 -------

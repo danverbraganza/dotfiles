@@ -1,4 +1,4 @@
-;;; virtualenv.el --- Switching virtual python enviroments seamlessly
+;;; virtualenv.el --- Switching virtual python environments seamlessly
 
 ;; Copyright (C) 2010 Gabriele Lanaro
 
