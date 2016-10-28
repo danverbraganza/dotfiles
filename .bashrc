@@ -1,4 +1,4 @@
-# ~/.bashrc: executed by bash(1) for non-login shells.
+ # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
@@ -10,14 +10,14 @@ esac
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
-HISTCONTROL=ignoreboth
+HISTCONTROL=ignoreboth:erasedups
 
 # append to the history file, don't overwrite it
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
+HISTSIZE="INFINITE"
+HISTFILESIZE="INFINITE"
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -138,12 +138,14 @@ IGNORED()
 hmup()
 {
     pushd ~/Hipmunk/
-    docker-compose up hipmunk
+    docker-compose up varnish
     popd
 }
 alias hmsh='docker exec -it hipmunk_hipmunk_1 /bin/bash'
 alias hmff='docker exec -it hipmunk_hipmunk_1 python -m hipmunk.ff --debug'
 alias add_screen='xrandr --output VGA1 --mode 2048x1152 --above eDP1'
+alias demo_time='xrandr --output HDMI1 --mode 1920x1080 --right-of eDP1'
+alias fly_solo='xrandr --output HDMI1 --output VGA1 --off'
 alias node='nodejs'
 
 export GIT_PS1_SHOWDIRTYSTATE=1
@@ -155,3 +157,7 @@ HIPBASE="$HOME/Hipmunk"
 HIPMANAGEDIR="$HOME/hipmanage"
 HIPLINUX="true"
 . ~/Hipmunk/install/hiprc
+export COMPOSE_API_VERSION=1.18
+export DOCKER_API_VERSION=1.18
+
+[[ -f ~/.jenkins_creds ]] && . ~/.jenkins_creds
