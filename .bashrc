@@ -122,7 +122,7 @@ fi
 GITHUB_USERNAME=danverbraganza
 
 # I have tried to fork-bomb myself in the past.
-ulimit -u 1000
+ulimit -u 5000
 
 export ANDROID_HOME=/usr/local/android/sdk
 export GOPATH=~/projects/go
@@ -145,8 +145,12 @@ alias hmsh='docker exec -it hipmunk_hipmunk_1 /bin/bash'
 alias hmff='docker exec -it hipmunk_hipmunk_1 python -m hipmunk.ff --debug'
 alias add_screen='xrandr --output VGA1 --mode 2048x1152 --above eDP1'
 alias demo_time='xrandr --output HDMI1 --mode 1920x1080 --right-of eDP1'
-alias fly_solo='xrandr --output HDMI1 --output VGA1 --off'
+alias fly_solo='xrandr --output HDMI1 --off; xrandr --output VGA1 --off'
+alias hipvpn='sudo openvpn ~/vpn/hipmunk.ovpn'
+alias hipoldvpn='sudo openvpn ~/vpn/pfsense-udp-1195-config.ovpn'
 alias node='nodejs'
+alias concur_vpn='cat ~/concur.cred | sudo tee openconnect vpn.concur.com -u DanverB'
+alias bat='upower -i $(upower -e | grep 'BAT') | grep -E "state|to\ full|percentage"'
 
 export GIT_PS1_SHOWDIRTYSTATE=1
 export GIT_PS1_SHOWSTASHSTATE=1

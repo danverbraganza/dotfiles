@@ -10,7 +10,7 @@
   (add-to-list 'flymake-allowed-file-name-masks
                '("\\.py\\'" flymake-pyflakes-init)))
 
-(add-hook 'find-file-hook 'flymake-find-file-hook)
+;(add-hook 'find-file-hook 'flymake-find-file-hook)
 
 (load-file "/usr/local/share/emacs/site-lisp/emacs-for-python/epy-init.el")
 
