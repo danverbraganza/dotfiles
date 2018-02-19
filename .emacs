@@ -48,12 +48,12 @@
 (require 'python-mode)
 
 (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/go-mode.el/")
-(require 'go-mode-autoloads)
+;(require 'go-mode-autoloads)
 
 (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/goflymake")
 (require 'go-flymake)
 
-(require 'protobuf-mode)
+;(require 'protobuf-mode)
 (add-to-list 'auto-mode-alist '("\.proto$" . protobuf-mode))
 
 (add-hook 'after-load-hook (lambda ()
@@ -98,9 +98,9 @@
                          ("marmalade" . "https://marmalade-repo.org/packages/")
                          ("melpa" . "http://melpa.org/packages/")))
 
-(require 'py-autopep8)
-(add-hook 'python-mode-hook 'py-autopep8-enable-on-save)
-(setq py-autopep8-options '("--ignore=E712"))
+;(require 'py-autopep8)
+;(add-hook 'python-mode-hook 'py-autopep8-enable-on-save)
+;(setq py-autopep8-options '("--ignore=E712"))
 
 (setq skeleton-pair nil)
 (custom-set-variables '(coffee-tab-width 4))
