@@ -126,24 +126,14 @@ ulimit -u 5000
 
 export ANDROID_HOME=/usr/local/android/sdk
 export GOPATH=~/projects/go
-export PATH=$PATH:/usr/local/go/bin:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$GOPATH/bin:~/hipmanage/hipmanage
-alias set_gopath='export GOPATH=$(pwd)'
+export PATH=$PATH:/usr/local/go/bin:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$GOPATH/bin
 export EDITOR=emacs
-export WORKDIR=$HOME/Hipmunk
 IGNORED()
 {
     echo IGNORED $@
 }
 
-hmup()
-{
-    pushd ~/Hipmunk/
-    docker-compose up varnish
-    popd
-}
-alias hmsh='docker exec -it hipmunk_hipmunk_1 /bin/bash'
-alias hmff='docker exec -it hipmunk_hipmunk_1 python -m hipmunk.ff --debug'
-alias add_screen='xrandr --output VGA-1 --mode 2048x1152 --above eDP-1'
+alias add_screen='xrandr --output DP-1 --mode 2048x1152 --above eDP-1'
 alias demo_time='xrandr --output HDMI-1 --mode 1920x1080 --right-of eDP-1'
 alias fly_solo='xrandr --output HDMI-1 --off; xrandr --output VGA-1 --off'
 alias hipvpn='sudo openvpn ~/vpn/hipmunk.ovpn'
@@ -156,15 +146,6 @@ export GIT_PS1_SHOWDIRTYSTATE=1
 export GIT_PS1_SHOWSTASHSTATE=1
 export GIT_PS1_SHOWUNTRACKEDFILES=1
 export GIT_PS1_SHOWUPSTREAM="auto"
-
-HIPBASE="$HOME/Hipmunk"
-HIPMANAGEDIR="$HOME/hipmanage"
-HIPLINUX="true"
-. ~/Hipmunk/install/hiprc
-#export COMPOSE_API_VERSION=1.18
-#export DOCKER_API_VERSION=1.18
-
-[[ -f ~/.jenkins_creds ]] && . ~/.jenkins_creds
 
 # RUN ONCE on INSTALL
 # git config --global core.excludesfile ~/.gitignore
