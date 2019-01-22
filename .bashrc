@@ -133,14 +133,13 @@ IGNORED()
     echo IGNORED $@
 }
 
-alias add_screen='xrandr --output DP-1 --mode 2048x1152 --above eDP-1'
+alias add_screen='xrandr --output DP-1 --mode 21920x1200 --above eDP-1'
 alias demo_time='xrandr --output HDMI-1 --mode 1920x1080 --right-of eDP-1'
 alias fly_solo='xrandr --output HDMI-1 --off; xrandr --output VGA-1 --off'
-alias hipvpn='sudo openvpn ~/vpn/hipmunk.ovpn'
-alias hipoldvpn='sudo openvpn ~/vpn/pfsense-udp-1195-config.ovpn'
 alias node='nodejs'
-alias concur_vpn='cat ~/concur.cred | sudo tee openconnect vpn.concur.com -u DanverB'
 alias bat='upower -i $(upower -e | grep 'BAT') | grep -E "state|to\ full|percentage"'
+. ~/.creds
+
 
 export GIT_PS1_SHOWDIRTYSTATE=1
 export GIT_PS1_SHOWSTASHSTATE=1
