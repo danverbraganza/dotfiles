@@ -1,3 +1,29 @@
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+(package-initialize)
+
+
+(defvar my-packages
+  '(flymake flymake-go flymake-python-pyflakes flymake-yaml flymake-easy go-mode magit git-commit dash protobuf-mode python-mode transient with-editor async yaml-mode)
+  "A list of packages to ensure are installed at launch.")
+
+(defun my-packages-installed-p ()
+  (let ((value t))
+    (dolist (p my-packages value)
+      (if (not (package-installed-p p))
+	  (setq value nil)))
+       value))
+
+(unless (my-packages-installed-p)
+  ;; check for new packages (package versions)
+  (package-refresh-contents)
+  ;; install the missing packages
+  (dolist (p my-packages)
+    (when (not (package-installed-p p))
+      (package-install p))))
+
 (when (load "flymake" t)
   (defun flymake-pyflakes-init ()
     (let* ((temp-file (flymake-init-create-temp-buffer-copy
@@ -11,8 +37,6 @@
                '("\\.py\\'" flymake-pyflakes-init)))
 
 ;(add-hook 'find-file-hook 'flymake-find-file-hook)
-
-(load-file "/usr/local/share/emacs/site-lisp/emacs-for-python/epy-init.el")
 
 (setq python-indent 4)
 (setq js-indent-level 2)
@@ -28,32 +52,13 @@
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
 
-(add-hook 'yaml-mode-hook
+'(add-hook 'yaml-mode-hook
           '(lambda ()
              (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
 
-(require 'feature-mode)
-(add-to-list 'auto-mode-alist '("\.feature$" . feature-mode))
-(add-hook 'feature-mode-hook
-          '(lambda ()
-             (define-key feature-mode-map "\C-m" 'newline-and-indent)))
-
-
-(autoload 'lua-mode "lua-mode" "Lua editing mode." t)
-(add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode))
-(add-to-list 'interpreter-mode-alist '("lua" . lua-mode))
-
-(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/python-mode.el-6.0.10")
-(setq py-install-directory "/usr/local/share/emacs/site-lisp/python-mode.el-6.0.10")
 (require 'python-mode)
 
-(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/go-mode.el/")
-;(require 'go-mode-autoloads)
-
-(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/goflymake")
-(require 'go-flymake)
-
-;(require 'protobuf-mode)
+(require 'protobuf-mode)
 (add-to-list 'auto-mode-alist '("\.proto$" . protobuf-mode))
 
 (add-hook 'after-load-hook (lambda ()
@@ -64,35 +69,33 @@
 (put 'set-goal-column 'disabled nil)
 
 ; Then run:
-; pushd /usr/local/share/emacs/site-lisp/
-; sudo wget https://raw.github.com/yoshiki/yaml-mode/master/yaml-mode.el
-; sudo wget https://raw.github.com/michaelklishin/cucumber.el/master/feature-mode.el
 ; sudo pip install pyflakes
-; sudo wget http://www.emacswiki.org/emacs/download/flymake-cursor.el
-; sudo wget https://launchpad.net/python-mode/trunk/6.0.10/+download/python-mode.el-6.0.10.tar.gz
-; sudo tar -xzvf python-mode.el-6.0.10.tar.gz
-; sudo wget http://protobuf.googlecode.com/svn/trunk/editors/protobuf-mode.el
-; sudo git clone https://github.com/gabrielelanaro/emacs-for-python.git
-; sudo git clone https://github.com/dominikh/go-mode.el.git
-; sudo git clone https://github.com/dougm/goflymake.git
-; M-x package-install [RET] coffee-mode [RET]
+
 
 (custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
- '(inhibit-startup-screen t)
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(coffee-tab-width 4)
+ '(column-number-mode t)
+ '(custom-enabled-themes (quote (deeper-blue)))
  '(fill-column 80)
  '(highlight-beyond-fill-column t)
- '(sentence-end-double-space nil)
- '(column-number-mode t)
-)
+ '(inhibit-startup-screen t)
+ '(package-selected-packages
+   (quote
+    (go-mode protobuf-mode yaml-mode flymake magit python-mode flymake-yaml flymake-python-pyflakes flymake-go)))
+ '(sentence-end-double-space nil))
 
 (custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(flymake-errline ((((class color)) (:background "dark magenta"))))
- '(flymake-warnline ((((class color)) (:background "grey30"))))
- '(flymake-infoline ((((class color)) (:background "grey15")))))
+ '(flymake-infoline ((((class color)) (:background "grey15"))))
+ '(flymake-warnline ((((class color)) (:background "grey30")))))
 
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                          ("marmalade" . "https://marmalade-repo.org/packages/")
@@ -103,7 +106,7 @@
 ;(setq py-autopep8-options '("--ignore=E712"))
 
 (setq skeleton-pair nil)
-(custom-set-variables '(coffee-tab-width 4))
+
 
 (global-set-key [f3] 'flymake-display-err-menu-for-current-line)
 (global-set-key [f4] 'flymake-goto-next-error)
