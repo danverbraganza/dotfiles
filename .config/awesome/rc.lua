@@ -189,7 +189,7 @@ local function set_wallpaper(s)
         if type(wallpaper) == "function" then
             wallpaper = wallpaper(s)
         end
-        gears.wallpaper.centered(wallpaper, s, "#000000", 0.2)
+        gears.wallpaper.centered(wallpaper, s, "#000000", 0.8)
     end
 end
 
