@@ -1,3 +1,7 @@
+(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+                         ("marmalade" . "https://marmalade-repo.org/packages/")
+                         ("melpa" . "http://melpa.org/packages/")))
+
 ;; Added by Package.el.  This must come before configurations of
 ;; installed packages.  Don't delete this line.  If you don't want it,
 ;; just comment it out by adding a semicolon to the start of the line.
@@ -97,9 +101,6 @@
  '(flymake-infoline ((((class color)) (:background "grey15"))))
  '(flymake-warnline ((((class color)) (:background "grey30")))))
 
-(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                         ("marmalade" . "https://marmalade-repo.org/packages/")
-                         ("melpa" . "http://melpa.org/packages/")))
 
 ;(require 'py-autopep8)
 ;(add-hook 'python-mode-hook 'py-autopep8-enable-on-save)
