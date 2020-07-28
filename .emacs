@@ -99,7 +99,8 @@
  ;; If there is more than one, they won't work right.
  '(flymake-errline ((((class color)) (:background "dark magenta"))))
  '(flymake-infoline ((((class color)) (:background "grey15"))))
- '(flymake-warnline ((((class color)) (:background "grey30")))))
+ '(flymake-warnline ((((class color)) (:background "grey30"))))
+ '(font-lock-comment-face ((t (:foreground "color-40")))))
 
 
 ;(require 'py-autopep8)
