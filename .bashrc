@@ -124,6 +124,7 @@ GITHUB_USERNAME=danverbraganza
 # I have tried to fork-bomb myself in the past.
 ulimit -u 5000
 
+export DEV=1
 export ANDROID_HOME=/usr/local/android/sdk
 export GOPATH=~/projects/go
 export PATH=$PATH:/usr/local/go/bin:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$GOPATH/bin
@@ -133,18 +134,27 @@ IGNORED()
     echo IGNORED $@
 }
 
-alias add_screen='xrandr --output DP-1 --mode 21920x1200 --above eDP-1'
+alias add_screen='xrandr --output DP-2 --mode 1920x1200 --above eDP-1'
 alias demo_time='xrandr --output HDMI-1 --mode 1920x1080 --right-of eDP-1'
 alias fly_solo='xrandr --output HDMI-1 --off; xrandr --output VGA-1 --off'
 alias node='nodejs'
 alias bat='upower -i $(upower -e | grep 'BAT') | grep -E "state|to\ full|percentage"'
 . ~/.creds
+export BH_HOME=~/bighealth/
 
+. ~/bighealth/ops-tools/.bhrc
 
 export GIT_PS1_SHOWDIRTYSTATE=1
 export GIT_PS1_SHOWSTASHSTATE=1
 export GIT_PS1_SHOWUNTRACKEDFILES=1
 export GIT_PS1_SHOWUPSTREAM="auto"
 
+
+export ALLOW_PRECOMMIT_NO_CONFIG=1
+
 # RUN ONCE on INSTALL
 # git config --global core.excludesfile ~/.gitignore
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

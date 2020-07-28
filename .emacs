@@ -2,15 +2,15 @@
                          ("marmalade" . "https://marmalade-repo.org/packages/")
                          ("melpa" . "https://melpa.org/packages/")))
 
+(require 'package)
 ;; Added by Package.el.  This must come before configurations of
 ;; installed packages.  Don't delete this line.  If you don't want it,
 ;; just comment it out by adding a semicolon to the start of the line.
 ;; You may delete these explanatory comments.
 (package-initialize)
 
-
 (defvar my-packages
-  '(flymake flymake-go flymake-python-pyflakes flymake-yaml flymake-easy go-mode magit git-commit dash protobuf-mode python-mode transient with-editor async yaml-mode)
+  '(flymake flymake-go flymake-python-pyflakes flymake-yaml flymake-easy go-mode magit git-commit dash protobuf-mode python-mode transient with-editor async yaml-mode blacken)
   "A list of packages to ensure are installed at launch.")
 
 (defun my-packages-installed-p ()
@@ -72,25 +72,25 @@
 
 (put 'set-goal-column 'disabled nil)
 
-; Then run:
-; sudo pip install pyflakes
-
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-names-vector
+   ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
+ '(auto-revert-interval 1)
+ '(blacken-line-length 150)
  '(coffee-tab-width 4)
  '(column-number-mode t)
  '(custom-enabled-themes (quote (deeper-blue)))
+ '(electric-indent-mode nil)
  '(fill-column 80)
+ '(global-auto-revert-mode 1)
  '(highlight-beyond-fill-column t)
  '(inhibit-startup-screen t)
- '(package-selected-packages
-   (quote
-    (go-mode protobuf-mode yaml-mode flymake magit python-mode flymake-yaml flymake-python-pyflakes flymake-go)))
  '(sentence-end-double-space nil))
+
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -105,12 +105,32 @@
 ;(require 'py-autopep8)
 ;(add-hook 'python-mode-hook 'py-autopep8-enable-on-save)
 ;(setq py-autopep8-options '("--ignore=E712"))
+(setq py-autopep8-options '("--max-line-length=120" "--ignore=E402"))
 
 (setq skeleton-pair nil)
-
 
 (global-set-key [f3] 'flymake-display-err-menu-for-current-line)
 (global-set-key [f4] 'flymake-goto-next-error)
 
-(fset 'new-python-bin
-   "import logging\C-m\C-mfrom tornado import gen\C-mfrom tornado.options import define\C-m\C-mfrom hipmunk.lib import start\C-mfrom hipmunk.options import options, remaining_options\C-m\C-m\C-m@start.ioloop\C-mdef main(ioloop, *args):\C-mtry:\C-m#insert code here\C-m\C-mfinally:\C-mreturn ioloop.stop()\C-m\C-m\C-m\C-m\C-?\C-?\C-?\C-?if __name__ == '__main__':\C-mmain(*remaining_options)\C-m")
+(defun revert-all-file-buffers ()
+  "Refresh all open file buffers without confirmation.
+Buffers in modified (not yet saved) state in emacs will not be reverted. They
+will be reverted though if they were modified outside emacs.
+Buffers visiting files which do not exist any more or are no longer readable
+will be killed."
+  (interactive)
+  (dolist (buf (buffer-list))
+    (let ((filename (buffer-file-name buf)))
+      ;; Revert only buffers containing files, which are not modified;
+      ;; do not try to revert non-file buffers like *Messages*.
+      (when (and filename
+                 (not (buffer-modified-p buf)))
+        (if (file-readable-p filename)
+            ;; If the file exists and is readable, revert the buffer.
+            (with-current-buffer buf
+              (revert-buffer :ignore-auto :noconfirm :preserve-modes))
+          ;; Otherwise, kill the buffer.
+          (let (kill-buffer-query-functions) ; No query done when killing buffer
+            (kill-buffer buf)
+            (message "Killed non-existing/unreadable file buffer: %s" filename))))))
+  (message "Finished reverting buffers containing unmodified files."))
