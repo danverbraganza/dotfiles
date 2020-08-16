@@ -10,7 +10,7 @@
 (package-initialize)
 
 (defvar my-packages
-  '(flymake flymake-go flymake-python-pyflakes flymake-yaml flymake-easy go-mode magit git-commit dash protobuf-mode python-mode transient with-editor async yaml-mode blacken)
+  '(flymake flymake-go flymake-python-pyflakes flymake-yaml flymake-easy go-mode magit git-commit dash protobuf-mode python-mode transient with-editor async yaml-mode company-jedi company blacken helm-swoop)
   "A list of packages to ensure are installed at launch.")
 
 (defun my-packages-installed-p ()
@@ -40,11 +40,11 @@
   (add-to-list 'flymake-allowed-file-name-masks
                '("\\.py\\'" flymake-pyflakes-init)))
 
-;(add-hook 'find-file-hook 'flymake-find-file-hook)
+(add-hook 'find-file-hook 'flymake-find-file-hook)
 
 (setq python-indent 4)
 (setq js-indent-level 2)
-(setq-default indent-tabs-mode nil)
+(setq-default indent-tabs-mode t)
 
 (add-hook 'java-mode-hook (lambda ()
                            (setq c-basic-offset 4)))
@@ -86,9 +86,15 @@
  '(custom-enabled-themes (quote (deeper-blue)))
  '(electric-indent-mode nil)
  '(fill-column 80)
+ '(flymake-start-on-flymake-mode t)
  '(global-auto-revert-mode 1)
  '(highlight-beyond-fill-column t)
  '(inhibit-startup-screen t)
+ '(package-selected-packages
+   (quote
+    (company-jedi yaml-mode transient python-mode python py-autopep8 protobuf-mode magit json-mode go-mode flymake-yaml flymake-python-pyflakes flymake-go flymake-cursor coffee-mode blacken)))
+ '(py--delete-temp-file-delay 0.1)
+ '(py-paragraph-re "*")
  '(sentence-end-double-space nil))
 
 
@@ -97,9 +103,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(flymake-errline ((((class color)) (:background "dark magenta"))))
+ '(flymake-error ((((class color)) (:background "dark magenta"))))
  '(flymake-infoline ((((class color)) (:background "grey15"))))
- '(flymake-warnline ((((class color)) (:background "grey30"))))
+ '(flymake-warning ((((class color)) (:background "grey30"))))
  '(font-lock-comment-face ((t (:foreground "color-40")))))
 
 
