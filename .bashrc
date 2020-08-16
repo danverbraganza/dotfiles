@@ -141,6 +141,7 @@ alias node='nodejs'
 alias bat='upower -i $(upower -e | grep 'BAT') | grep -E "state|to\ full|percentage"'
 . ~/.creds
 export BH_HOME=~/bighealth/
+alias awsume=". awsume"
 
 . ~/bighealth/ops-tools/.bhrc
 
