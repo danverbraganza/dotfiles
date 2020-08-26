@@ -142,6 +142,7 @@ alias bat='upower -i $(upower -e | grep 'BAT') | grep -E "state|to\ full|percent
 . ~/.creds
 export BH_HOME=~/bighealth/
 alias awsume=". awsume"
+alias emasc=emacs
 
 . ~/bighealth/ops-tools/.bhrc
 

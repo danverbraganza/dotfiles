@@ -61,6 +61,7 @@
              (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
 
 (require 'python-mode)
+(setq python-shell-interpreter "python3")
 
 (require 'protobuf-mode)
 (add-to-list 'auto-mode-alist '("\.proto$" . protobuf-mode))
@@ -92,7 +93,7 @@
  '(inhibit-startup-screen t)
  '(package-selected-packages
    (quote
-    (company-jedi yaml-mode transient python-mode python py-autopep8 protobuf-mode magit json-mode go-mode flymake-yaml flymake-python-pyflakes flymake-go flymake-cursor coffee-mode blacken)))
+    (isortify company-jedi yaml-mode transient python-mode python py-autopep8 protobuf-mode magit json-mode go-mode flymake-yaml flymake-python-pyflakes flymake-go flymake-cursor coffee-mode blacken)))
  '(py--delete-temp-file-delay 0.1)
  '(py-paragraph-re "*")
  '(sentence-end-double-space nil))
