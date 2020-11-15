@@ -134,6 +134,8 @@ IGNORED()
     echo IGNORED $@
 }
 
+highlight() { grep --color "$1\|\$"; }
+
 alias add_screen='xrandr --output DP-2 --mode 1920x1200 --above eDP-1'
 alias demo_time='xrandr --output HDMI-1 --mode 1920x1080 --right-of eDP-1'
 alias fly_solo='xrandr --output HDMI-1 --off; xrandr --output VGA-1 --off'
