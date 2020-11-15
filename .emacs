@@ -84,7 +84,7 @@
  '(blacken-line-length 150)
  '(coffee-tab-width 4)
  '(column-number-mode t)
- '(custom-enabled-themes (quote (deeper-blue)))
+ '(custom-enabled-themes '(deeper-blue))
  '(electric-indent-mode nil)
  '(fill-column 80)
  '(flymake-start-on-flymake-mode t)
@@ -92,8 +92,7 @@
  '(highlight-beyond-fill-column t)
  '(inhibit-startup-screen t)
  '(package-selected-packages
-   (quote
-    (isortify company-jedi yaml-mode transient python-mode python py-autopep8 protobuf-mode magit json-mode go-mode flymake-yaml flymake-python-pyflakes flymake-go flymake-cursor coffee-mode blacken)))
+   '(isortify company-jedi yaml-mode transient python-mode python py-autopep8 protobuf-mode magit json-mode go-mode flymake-yaml flymake-python-pyflakes flymake-go flymake-cursor coffee-mode blacken))
  '(py--delete-temp-file-delay 0.1)
  '(py-paragraph-re "*")
  '(sentence-end-double-space nil))
