@@ -126,8 +126,9 @@ ulimit -u 5000
 
 export DEV=1
 export ANDROID_HOME=/usr/local/android/sdk
-export GOPATH=~/projects/go:~/projects/
-export PATH=$PATH:/usr/local/go/bin:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$GOPATH/bin
+export GOPATH=~/projects/go:~/projects
+export PATH=$PATH:/usr/local/go/bin:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:~/projects/go/bin
+export GOPHERJS_GOROOT="$(~/projects/go/bin/go1.12.16 env GOROOT)"
 export EDITOR=emacs
 IGNORED()
 {
