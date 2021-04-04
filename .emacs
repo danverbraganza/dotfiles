@@ -10,7 +10,7 @@
 (package-initialize)
 
 (defvar my-packages
-  '(flymake flymake-go flymake-python-pyflakes flymake-yaml flymake-easy go-mode magit git-commit dash protobuf-mode python-mode transient with-editor async yaml-mode company-jedi company blacken helm-swoop elpy)
+  '(flymake flymake-go flymake-python-pyflakes flymake-yaml flymake-easy go-mode magit git-commit dash protobuf-mode python-mode transient with-editor async yaml-mode company-jedi company blacken helm-swoop elpy web-mode flymake-eslint prettier-js add-node-modules-path)
   "A list of packages to ensure are installed at launch.")
 
 (defun my-packages-installed-p ()
@@ -41,16 +41,31 @@
                '("\\.py\\'" flymake-pyflakes-init)))
 
 (add-hook 'find-file-hook 'flymake-find-file-hook)
-
-(setq python-indent 4)
-(setq js-indent-level 2)
 (setq-default indent-tabs-mode t)
 
-(elpy-enable)
+(setq python-indent 4)
 
+(add-to-list 'auto-mode-alist '("\\.jsx?$" . web-mode)) ;; auto-enable for .js/.jsx files
+(add-hook 'web-mode-hook ; or whatever the mode-hook is for your mode of choice
+  (lambda ()
+    (flymake-eslint-enable)))
+
+(defun web-mode-init-prettier-hook ()
+  (add-node-modules-path)
+  (prettier-js-mode))
+
+(add-hook 'web-mode-hook  'web-mode-init-prettier-hook)
+
+
+(setq js-indent-level 4)
+
+
+(elpy-enable)
 (eval-after-load "elpy"
   '(cl-dolist (key '("C-<down>"  "C-<up>"));
      (define-key elpy-mode-map (kbd key) nil)))
+
+(setq elpy-rpc-python-command 'python3)
 
 (add-hook 'java-mode-hook (lambda ()
                            (setq c-basic-offset 4)))
@@ -98,7 +113,7 @@
  '(highlight-beyond-fill-column t)
  '(inhibit-startup-screen t)
  '(package-selected-packages
-   '(elpy isortify company-jedi yaml-mode transient python-mode python py-autopep8 protobuf-mode magit json-mode go-mode flymake-yaml flymake-python-pyflakes flymake-go flymake-cursor coffee-mode blacken))
+   '(prettier-js elpy isortify company-jedi yaml-mode transient python-mode python py-autopep8 protobuf-mode magit json-mode go-mode flymake-yaml flymake-python-pyflakes flymake-go flymake-cursor coffee-mode blacken))
  '(py--delete-temp-file-delay 0.1)
  '(py-paragraph-re "*")
  '(sentence-end-double-space nil))
