@@ -137,7 +137,7 @@ IGNORED()
 highlight() { grep --color "$1\|\$"; }
 
 alias node='nodejs'
-export DOCKER_HOST="unix://run/docker.sock"
+#export DOCKER_HOST="unix://run/docker.sock"
 alias awsume=". awsume"
 alias emasc=emacs
 
