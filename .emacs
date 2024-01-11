@@ -74,6 +74,8 @@
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
+(add-hook 'before-save-hook 'gofmt-before-save)
+
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
 

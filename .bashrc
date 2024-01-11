@@ -127,7 +127,7 @@ ulimit -u 5000
 export DEV=1
 export ANDROID_HOME=/usr/local/android/sdk
 export GOPATH=~/projects/go:~/projects
-export PATH=$PATH:/usr/local/go/bin:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:~/projects/go/bin
+export PATH=$PATH:/usr/local/go/bin:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:~/projects/go/bin:/home/nvader/.local/bin
 export EDITOR=emacs
 IGNORED()
 {
@@ -141,13 +141,9 @@ alias demo_time='xrandr --output HDMI-1 --mode 1920x1080 --right-of eDP-1'
 alias fly_solo='xrandr --output HDMI-1 --off; xrandr --output VGA-1 --off'
 alias node='nodejs'
 alias bat='upower -i $(upower -e | grep 'BAT') | grep -E "state|to\ full|percentage"'
-. ~/.creds
-export BH_HOME=~/bighealth/
 export DOCKER_HOST="unix://run/docker.sock"
 alias awsume=". awsume"
 alias emasc=emacs
-
-. ~/bighealth/ops-tools/.bhrc
 
 export GIT_PS1_SHOWDIRTYSTATE=1
 export GIT_PS1_SHOWSTASHSTATE=1
