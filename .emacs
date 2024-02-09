@@ -10,7 +10,7 @@
 (package-initialize)
 
 (defvar my-packages
-  '(flymake flymake-go flymake-python-pyflakes flymake-yaml flymake-easy go-mode magit git-commit dash protobuf-mode python-mode transient with-editor async yaml-mode company-jedi company blacken helm-swoop elpy web-mode flymake-eslint prettier-js add-node-modules-path)
+  '(flymake flymake-go flymake-python-pyflakes flymake-yaml flymake-easy go-mode magit git-commit dash protobuf-mode python-mode transient with-editor async yaml-mode company-jedi company blacken helm-swoop elpy web-mode flymake-eslint prettier-js add-node-modules-path counsel swiper ivy-hydra)
   "A list of packages to ensure are installed at launch.")
 
 (defun my-packages-installed-p ()
@@ -37,8 +37,9 @@
                         (file-name-directory buffer-file-name))))
       (list "pyflakes" (list local-file))))
 
-  (add-to-list 'flymake-allowed-file-name-masks
-               '("\\.py\\'" flymake-pyflakes-init)))
+  ;(add-to-list 'flymake-allowed-file-name-masks
+  ;             '("\\.py\\'" flymake-pyflakes-init))
+  )
 
 (add-hook 'find-file-hook 'flymake-find-file-hook)
 (setq-default indent-tabs-mode t)
@@ -115,7 +116,7 @@
  '(highlight-beyond-fill-column t)
  '(inhibit-startup-screen t)
  '(package-selected-packages
-   '(prettier-js elpy isortify company-jedi yaml-mode transient python-mode python py-autopep8 protobuf-mode magit json-mode go-mode flymake-yaml flymake-python-pyflakes flymake-go flymake-cursor coffee-mode blacken))
+   '(go-mode prettier-js elpy isortify company-jedi yaml-mode transient python-mode python py-autopep8 protobuf-mode magit json-mode flymake-yaml flymake-python-pyflakes flymake-go flymake-cursor coffee-mode blacken))
  '(py--delete-temp-file-delay 0.1)
  '(py-paragraph-re "*")
  '(sentence-end-double-space nil))
@@ -164,3 +165,63 @@ will be killed."
             (kill-buffer buf)
             (message "Killed non-existing/unreadable file buffer: %s" filename))))))
   (message "Finished reverting buffers containing unmodified files."))
+
+
+;; From Martin Fowler's Blog
+(setq ivy-re-builders-alist '((t . ivy--regex-ignore-order)))
+
+(use-package ivy
+  :demand t
+  :diminish ivy-mode
+  :config
+  (ivy-mode 1)
+  (counsel-mode 1)
+  (setq ivy-use-virtual-buffers t)
+  (setq ivy-use-selectable-prompt t)
+  (setq ivy-ignore-buffers '(\\` " \\`\\*magit"))
+  (setq ivy-re-builders-alist '(
+                                (t . ivy--regex-ignore-order)
+                                ))
+  (setq ivy-height 10)
+  (setq counsel-find-file-at-point t)
+  (setq ivy-count-format "(%d/%d) "))
+
+(use-package counsel
+  :bind (
+         ("C-x C-b" . ivy-switch-buffer)
+         ("C-x b" . ivy-switch-buffer)
+         ("M-r" . counsel-ag)
+         ("C-x C-d" . counsel-dired)
+         ("C-x d" . counsel-dired)
+         )
+  :diminish
+  :config
+  (global-set-key [remap org-set-tags-command] #'counsel-org-tag))
+
+(use-package swiper
+  :bind(("M-C-s" . swiper)))
+
+(use-package ivy-hydra)
+
+;; From https://www.masteringemacs.org/article/how-to-get-started-tree-sitter
+;; by Mickey Petersen
+(when nil
+      (setq treesit-language-source-alist
+	    '((bash "https://github.com/tree-sitter/tree-sitter-bash")
+	     (cmake "https://github.com/uyha/tree-sitter-cmake")
+	     (css "https://github.com/tree-sitter/tree-sitter-css")
+	     (elisp "https://github.com/Wilfred/tree-sitter-elisp")
+	     (go "https://github.com/tree-sitter/tree-sitter-go")
+	     (html "https://github.com/tree-sitter/tree-sitter-html")
+	     (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
+	     (json "https://github.com/tree-sitter/tree-sitter-json")
+	     (make "https://github.com/alemuller/tree-sitter-make")
+	     (markdown "https://github.com/ikatyang/tree-sitter-markdown")
+	     (python "https://github.com/tree-sitter/tree-sitter-python")
+	     (toml "https://github.com/tree-sitter/tree-sitter-toml")
+	     (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
+	     (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
+	     (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
+
+      (mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist))
+)
