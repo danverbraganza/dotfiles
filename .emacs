@@ -1,5 +1,4 @@
-(setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
-                         ("marmalade" . "https://marmalade-repo.org/packages/")
+(setq package-archives '(("marmalade" . "https://marmalade-repo.org/packages/")
                          ("melpa" . "https://melpa.org/packages/")))
 
 (require 'package)
@@ -9,8 +8,10 @@
 ;; You may delete these explanatory comments.
 (package-initialize)
 
+(package-install 'use-package)
+
 (defvar my-packages
-  '(flymake flymake-go flymake-python-pyflakes flymake-yaml flymake-easy go-mode magit git-commit dash protobuf-mode python-mode transient with-editor async yaml-mode company-jedi company blacken helm-swoop elpy web-mode flymake-eslint prettier-js add-node-modules-path counsel swiper ivy-hydra)
+  '(flymake flymake-go flymake-python-pyflakes flymake-yaml flymake-easy go-mode magit git-commit dash protobuf-mode python-mode transient with-editor async yaml-mode company-jedi company blacken helm-swoop elpy web-mode flymake-eslint prettier-js add-node-modules-path)
   "A list of packages to ensure are installed at launch.")
 
 (defun my-packages-installed-p ()
@@ -60,7 +61,6 @@
 
 (setq js-indent-level 4)
 
-
 (elpy-enable)
 (eval-after-load "elpy"
   '(cl-dolist (key '("C-<down>"  "C-<up>"));
@@ -102,13 +102,11 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ansi-color-names-vector
-   ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
  '(auto-revert-interval 1)
  '(blacken-line-length 150)
  '(coffee-tab-width 4)
  '(column-number-mode t)
- '(custom-enabled-themes '(deeper-blue))
+ '(custom-enabled-themes '(tango-dark))
  '(electric-indent-mode nil)
  '(fill-column 80)
  '(flymake-start-on-flymake-mode t)
@@ -187,10 +185,11 @@ will be killed."
   (setq ivy-count-format "(%d/%d) "))
 
 (use-package counsel
+  :ensure t
   :bind (
          ("C-x C-b" . ivy-switch-buffer)
          ("C-x b" . ivy-switch-buffer)
-         ("M-r" . counsel-ag)
+         ("M-r" . counsel-rg)
          ("C-x C-d" . counsel-dired)
          ("C-x d" . counsel-dired)
          )
@@ -199,9 +198,11 @@ will be killed."
   (global-set-key [remap org-set-tags-command] #'counsel-org-tag))
 
 (use-package swiper
+  :ensure t
   :bind(("M-C-s" . swiper)))
 
-(use-package ivy-hydra)
+(use-package ivy-hydra
+  :ensure t)
 
 ;; From https://www.masteringemacs.org/article/how-to-get-started-tree-sitter
 ;; by Mickey Petersen
