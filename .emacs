@@ -51,6 +51,7 @@
   :after flycheck
   )
 
+; TODO: mypy checks are not working
 (use-package flycheck-mypy
   :ensure t
   :after flycheck
