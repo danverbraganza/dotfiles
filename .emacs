@@ -1,3 +1,4 @@
+;;; .emacs --- Danver Braganza's Emacs file
 (setq package-archives '(("marmalade" . "https://marmalade-repo.org/packages/")
                          ("melpa" . "https://melpa.org/packages/")))
 
@@ -11,7 +12,7 @@
 (package-install 'use-package)
 
 (defvar my-packages
-  '(flymake-python-pyflakes flymake-yaml flymake-easy magit git-commit dash protobuf-mode transient with-editor async yaml-mode company-jedi company blacken helm-swoop elpy web-mode flymake-eslint prettier-js add-node-modules-path)
+  '(flymake-python-pyflakes flymake-easy git-commit dash transient with-editor async)
   "A list of packages to ensure are installed at launch.")
 
 (defun my-packages-installed-p ()
@@ -64,47 +65,57 @@
 
 (setq-default indent-tabs-mode t)
 
+(use-package magit :ensure t)
 
+(use-package company-jedi :ensure t)
 
-(add-to-list 'auto-mode-alist '("\\.jsx?$" . web-mode)) ;; auto-enable for .js/.jsx files
-(add-hook 'web-mode-hook ; or whatever the mode-hook is for your mode of choice
-  (lambda ()
-    (flymake-eslint-enable)))
+(use-package company :ensure t)
 
-(defun web-mode-init-prettier-hook ()
-  (add-node-modules-path)
-  (prettier-js-mode))
+(use-package blacken :ensure t)
 
-(add-hook 'web-mode-hook  'web-mode-init-prettier-hook)
+(use-package helm-swoop :ensure t)
 
+(use-package elpy :ensure t
+  :init
+      (elpy-enable)
+      (setq elpy-rpc-python-command 'python3)
+)
+
+(use-package prettier-js :ensure t)
+
+(use-package web-mode :ensure t
+  :init
+    (add-node-modules-path)
+    (prettier-js-mode)
+  :hook
+    flymake-eslint-enable
+  :mode '("\\.jsx?$" . web-mode)
+ )
+
+(use-package flymake-eslint :ensure t)
+
+(use-package add-node-modules-path :ensure t)
 
 (setq js-indent-level 4)
-
-(elpy-enable)
-(eval-after-load "elpy"
-  '(cl-dolist (key '("C-<down>"  "C-<up>"));
-     (define-key elpy-mode-map (kbd key) nil)))
-
-(setq elpy-rpc-python-command 'python3)
 
 (add-hook 'java-mode-hook (lambda ()
                            (setq c-basic-offset 4)))
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
+(use-package yaml-mode :ensure t
+  :mode ("\\.yml$" . yaml-mode)
+  :init
+  (lambda ()
+    (define-key yaml-mode-map "\C-m" 'newline-and-indent))
 
-
-(require 'yaml-mode)
-(add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
-
-'(add-hook 'yaml-mode-hook
-          '(lambda ()
-             (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
+)
 
 (setq python-shell-interpreter "python3")
 
-(require 'protobuf-mode)
-(add-to-list 'auto-mode-alist '("\.proto$" . protobuf-mode))
+(use-package protobuf-mode :ensure t
+  :mode ("\\.proto$" . protobuf-mode))
+
 
 (add-hook 'after-load-hook (lambda ()
                            (setq py-indent-offset 2)
@@ -193,17 +204,17 @@ will be killed."
                                 (t . ivy--regex-ignore-order)
                                 ))
   (setq ivy-height 10)
-  (setq counsel-find-file-at-point t)
+  (setq counsel-find-file-at-point nil)
   (setq ivy-count-format "(%d/%d) "))
 
 (use-package counsel
   :ensure t
   :bind (
          ("C-x C-b" . ivy-switch-buffer)
-         ("C-x b" . ivy-switch-buffer)
          ("M-r" . counsel-rg)
          ("C-x C-d" . counsel-dired)
-         ("C-x d" . counsel-dired)
+	 ("C-x d" . dired)
+	 ("C-x b" . switch-buffer)
          )
   :diminish
   :config
