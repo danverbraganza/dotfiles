@@ -1,4 +1,6 @@
 ;;; .emacs --- Danver Braganza's Emacs file
+;;; Just my local emacs file
+
 (setq package-archives '(("marmalade" . "https://marmalade-repo.org/packages/")
                          ("melpa" . "https://melpa.org/packages/")))
 
@@ -11,56 +13,18 @@
 
 (package-install 'use-package)
 
-(defvar my-packages
-  '(flymake-python-pyflakes flymake-easy git-commit dash transient with-editor async)
-  "A list of packages to ensure are installed at launch.")
-
-(defun my-packages-installed-p ()
-  (let ((value t))
-    (dolist (p my-packages value)
-      (if (not (package-installed-p p))
-	  (setq value nil)))
-       value))
-
-(unless (my-packages-installed-p)
-  ;; check for new packages (package versions)
-  (package-refresh-contents)
-  ;; install the missing packages
-  (dolist (p my-packages)
-    (when (not (package-installed-p p))
-      (package-install p))))
-
 (use-package go-mode
   :ensure t
   :hook
-  ('before-save-hook . 'gofmt-before-save)
+  ('before-save . 'gofmt-before-save)
 )
 
 (use-package python-mode
   :ensure t
   :hook
-      (python-mode-hook . blacken-mode)
+      (python-mode . blacken-mode)
   :custom
     (python-indent 4)
-)
-
-(use-package flymake
-  :ensure t
-  :hook
-      (TeX-mode . flymake-mode) ;; this is now working
-      (emacs-lisp-mode . flymake-mode)
-  :custom
-      (flymake-no-changes-timeout nil)
-  :init
-  (global-set-key [f4] 'flymake-goto-next-error)
-  (global-set-key [f3] 'flymake-goto-prev-error)
-)
-
-(use-package flymake-go
-  :ensure t
-  :hook
-      (go-mode . flymake-moe)
-  ;; TODO: enable file name masks, and temp buffer create on save
 )
 
 (setq-default indent-tabs-mode t)
@@ -75,24 +39,31 @@
 
 (use-package helm-swoop :ensure t)
 
-(use-package elpy :ensure t
-  :init
-      (elpy-enable)
-      (setq elpy-rpc-python-command 'python3)
-)
-
 (use-package prettier-js :ensure t)
 
+(use-package flycheck
+  :ensure t
+  :init (global-flycheck-mode)
+  )
+
+(use-package flycheck-pyflakes
+  :ensure t
+  :after flycheck
+  )
+
+(use-package flycheck-mypy
+  :ensure t
+  :after flycheck
+  )
+
+
+;; TODO: web-mode needs work
 (use-package web-mode :ensure t
   :init
     (add-node-modules-path)
     (prettier-js-mode)
-  :hook
-    flymake-eslint-enable
   :mode '("\\.jsx?$" . web-mode)
  )
-
-(use-package flymake-eslint :ensure t)
 
 (use-package add-node-modules-path :ensure t)
 
@@ -115,7 +86,6 @@
 
 (use-package protobuf-mode :ensure t
   :mode ("\\.proto$" . protobuf-mode))
-
 
 (add-hook 'after-load-hook (lambda ()
                            (setq py-indent-offset 2)
@@ -141,7 +111,7 @@
  '(highlight-beyond-fill-column t)
  '(inhibit-startup-screen t)
  '(package-selected-packages
-   '(go-mode prettier-js elpy isortify company-jedi yaml-mode transient python-mode python py-autopep8 protobuf-mode magit json-mode flymake-yaml flymake-python-pyflakes flymake-go flymake-cursor coffee-mode blacken))
+   '(flycheck-mypy flycheck flycheck-go go-flycheck flycheck-pyflakes go-mode prettier-js elpy isortify company-jedi yaml-mode transient python-mode python py-autopep8 protobuf-mode magit json-mode flymake-yaml flymake-python-pyflakes flymake-go flymake-cursor coffee-mode blacken))
  '(py--delete-temp-file-delay 0.1)
  '(py-paragraph-re "*")
  '(sentence-end-double-space nil))
@@ -156,11 +126,6 @@
  '(flymake-infoline ((((class color)) (:background "grey15"))))
  '(flymake-warning ((((class color)) (:background "grey30"))))
  '(font-lock-comment-face ((t (:foreground "color-40")))))
-
-
-;(require 'py-autopep8)
-;(setq py-autopep8-options '("--ignore=E712"))
-(setq py-autopep8-options '("--max-line-length=120" "--ignore=E402"))
 
 (setq skeleton-pair nil)
 
@@ -199,7 +164,7 @@ will be killed."
   (counsel-mode 1)
   (setq ivy-use-virtual-buffers t)
   (setq ivy-use-selectable-prompt t)
-  (setq ivy-ignore-buffers '(\\` " \\`\\*magit"))
+  (setq ivy-ignore-buffers '())
   (setq ivy-re-builders-alist '(
                                 (t . ivy--regex-ignore-order)
                                 ))
@@ -214,7 +179,7 @@ will be killed."
          ("M-r" . counsel-rg)
          ("C-x C-d" . counsel-dired)
 	 ("C-x d" . dired)
-	 ("C-x b" . switch-buffer)
+	 ("C-x b" . ivy-switch-buffer)
          )
   :diminish
   :config
