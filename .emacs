@@ -11,7 +11,7 @@
 (package-install 'use-package)
 
 (defvar my-packages
-  '(flymake flymake-go flymake-python-pyflakes flymake-yaml flymake-easy go-mode magit git-commit dash protobuf-mode python-mode transient with-editor async yaml-mode company-jedi company blacken helm-swoop elpy web-mode flymake-eslint prettier-js add-node-modules-path)
+  '(flymake-python-pyflakes flymake-yaml flymake-easy magit git-commit dash protobuf-mode transient with-editor async yaml-mode company-jedi company blacken helm-swoop elpy web-mode flymake-eslint prettier-js add-node-modules-path)
   "A list of packages to ensure are installed at launch.")
 
 (defun my-packages-installed-p ()
@@ -29,6 +29,19 @@
     (when (not (package-installed-p p))
       (package-install p))))
 
+(use-package go-mode
+  :ensure t
+  :hook
+  ('before-save-hook . 'gofmt-before-save)
+)
+
+(use-package python-mode
+  :ensure t
+  :hook
+      (python-mode-hook . blacken-mode)
+  :custom
+    (python-indent 4)
+)
 
 (use-package flymake
   :ensure t
@@ -42,10 +55,16 @@
   (global-set-key [f3] 'flymake-goto-prev-error)
 )
 
+(use-package flymake-go
+  :ensure t
+  :hook
+      (go-mode . flymake-moe)
+  ;; TODO: enable file name masks, and temp buffer create on save
+)
 
 (setq-default indent-tabs-mode t)
 
-(setq python-indent 4)
+
 
 (add-to-list 'auto-mode-alist '("\\.jsx?$" . web-mode)) ;; auto-enable for .js/.jsx files
 (add-hook 'web-mode-hook ; or whatever the mode-hook is for your mode of choice
@@ -73,7 +92,7 @@
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-(add-hook 'before-save-hook 'gofmt-before-save)
+
 
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
@@ -82,7 +101,6 @@
           '(lambda ()
              (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
 
-(require 'python-mode)
 (setq python-shell-interpreter "python3")
 
 (require 'protobuf-mode)
@@ -130,7 +148,6 @@
 
 
 ;(require 'py-autopep8)
-;(add-hook 'python-mode-hook 'py-autopep8-enable-on-save)
 ;(setq py-autopep8-options '("--ignore=E712"))
 (setq py-autopep8-options '("--max-line-length=120" "--ignore=E402"))
 
