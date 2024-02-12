@@ -156,20 +156,11 @@ fi
 [[ $- == *i* ]] && source "/usr/local/opt/fzf/shell/completion.bash" 2> /dev/null
 # Key bindings
 # ------------
-source "/usr/share/doc/fzf/examples/key-bindings.bash"
-
-
-export ALLOW_PRECOMMIT_NO_CONFIG=1
+source "/usr/share/doc/fzf/examples/key-bindings.bash" 2> /dev/null # Linux
+source "/opt/homebrew/Cellar/fzf/*/shell/completion.bash" 2> /dev/null # Mac
 
 # RUN ONCE on INSTALL
 # git config --global core.excludesfile ~/.gitignore
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-alias ag=rg
-
 
 # Mac homebrew
 [ -x /opt/homebrew/bin/brew ] && eval "$(/opt/homebrew/bin/brew shellenv)"
