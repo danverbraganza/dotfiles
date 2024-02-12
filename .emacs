@@ -58,17 +58,33 @@
   )
 
 
-;; TODO: web-mode needs work
-(use-package web-mode :ensure t
-  :init
-    (add-node-modules-path)
-    (prettier-js-mode)
-  :mode '("\\.jsx?$" . web-mode)
- )
+(use-package typescript-mode
+  :config
+  ;; we choose this instead of tsx-mode so that eglot can automatically figure out language for server
+  ;; see https://github.com/joaotavora/eglot/issues/624 and https://github.com/joaotavora/eglot#handling-quirky-servers
+  (define-derived-mode typescriptreact-mode typescript-mode
+    "TypeScript TSX")
+
+  ;; use our derived mode for tsx files
+  (add-to-list 'auto-mode-alist '("\\.tsx?\\'" . typescriptreact-mode))
+  ;; by default, typescript-mode is mapped to the treesitter typescript parser
+  ;; use our derived mode to map both .tsx AND .ts -> typescriptreact-mode -> treesitter tsx
+  (add-to-list 'tree-sitter-major-mode-language-alist '(typescriptreact-mode . tsx)))
+
+
+;; https://github.com/orzechowskid/tsi.el/
+;; great tree-sitter-based indentation for typescript/tsx, css, json
+(use-package tsi
+  ;; define autoload definitions which when actually invoked will cause package to be loaded
+  :commands (tsi-typescript-mode tsi-json-mode tsi-css-mode)
+  :hook (
+  (typescript-mode . (lambda () (tsi-typescript-mode 1)))
+  (json-mode . (lambda () (tsi-json-mode 1)))
+  (css-mode . (lambda () (tsi-css-mode 1)))
+  (scss-mode . (lambda () (tsi-scss-mode 1)))))
+
 
 (use-package add-node-modules-path :ensure t)
-
-(setq js-indent-level 4)
 
 (add-hook 'java-mode-hook (lambda ()
                            (setq c-basic-offset 4)))
