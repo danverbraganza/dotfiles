@@ -23,8 +23,10 @@
   :ensure t
   :hook
       (python-mode . blacken-mode)
+      (python-mode . eglot-ensure)
   :custom
     (python-indent 4)
+    (python-shell-interpreter "python-3")
 )
 
 (setq-default indent-tabs-mode t)
@@ -99,8 +101,9 @@
   :init
   (lambda ()
     (define-key yaml-mode-map "\C-m" 'newline-and-indent))
-
 )
+
+(use-package eglot :ensure t)
 
 (setq python-shell-interpreter "python3")
 
