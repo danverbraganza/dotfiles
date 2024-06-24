@@ -146,6 +146,9 @@ export GIT_PS1_SHOWSTASHSTATE=1
 export GIT_PS1_SHOWUNTRACKEDFILES=1
 export GIT_PS1_SHOWUPSTREAM="auto"
 
+# Custom AWS config file
+export AWS_CONFIG_FILE=/Users/danver.branganza/github/ordering_services/build_tools/aws_configs/cloud_config
+
 # Setup fzf
 # ---------
 if [[ ! "$PATH" == */usr/local/opt/fzf/bin* ]]; then
@@ -159,8 +162,14 @@ fi
 source "/usr/share/doc/fzf/examples/key-bindings.bash" 2> /dev/null # Linux
 source "/opt/homebrew/Cellar/fzf/*/shell/completion.bash" 2> /dev/null # Mac
 
+if [ -f ~/.git-completion.bash ]; then
+  . ~/.git-completion.bash
+fi
+
 # RUN ONCE on INSTALL
 # git config --global core.excludesfile ~/.gitignore
 
 # Mac homebrew
 [ -x /opt/homebrew/bin/brew ] && eval "$(/opt/homebrew/bin/brew shellenv)"
+# Custom AWS config file
+export AWS_CONFIG_FILE=/Users/danver.branganza/github/ordering_services/build_tools/aws_configs/cloud_config
