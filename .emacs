@@ -25,11 +25,13 @@
       (python-mode . blacken-mode)
       (python-mode . eglot-ensure)
   :custom
+    (python-tab-width 4)
     (python-indent 4)
     (python-shell-interpreter "python-3")
 )
 
 (setq-default indent-tabs-mode t)
+(setq-default tab-width 4)
 
 (use-package magit :ensure t)
 
@@ -137,7 +139,8 @@
    '(eglot-tempel typescript-mode flycheck-mypy flycheck flycheck-go go-flycheck flycheck-pyflakes go-mode prettier-js elpy isortify company-jedi yaml-mode transient python-mode python py-autopep8 protobuf-mode magit json-mode flymake-yaml flymake-python-pyflakes flymake-go flymake-cursor coffee-mode blacken))
  '(py--delete-temp-file-delay 0.1)
  '(py-paragraph-re "*")
- '(sentence-end-double-space nil))
+ '(sentence-end-double-space nil)
+ '(tab-width 4))
 
 
 (custom-set-faces

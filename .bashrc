@@ -166,6 +166,8 @@ if [ -f ~/.git-completion.bash ]; then
   . ~/.git-completion.bash
 fi
 
+[ -f ~/.ziprc ] && . ~/.ziprc
+
 # RUN ONCE on INSTALL
 # git config --global core.excludesfile ~/.gitignore
 
