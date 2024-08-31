@@ -168,6 +168,9 @@ fi
 
 [ -f ~/.ziprc ] && . ~/.ziprc
 
+# FZF shell bindings
+eval "$(fzf --bash)"
+
 # RUN ONCE on INSTALL
 # git config --global core.excludesfile ~/.gitignore
 
