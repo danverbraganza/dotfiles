@@ -19,6 +19,9 @@
   ('before-save . 'gofmt-before-save)
 )
 
+(use-package toml-mode
+  :ensure t)
+
 (use-package python-mode
   :ensure t
   :hook
@@ -136,7 +139,7 @@
  '(highlight-beyond-fill-column t)
  '(inhibit-startup-screen t)
  '(package-selected-packages
-   '(eglot-tempel typescript-mode flycheck-mypy flycheck flycheck-go go-flycheck flycheck-pyflakes go-mode prettier-js elpy isortify company-jedi yaml-mode transient python-mode python py-autopep8 protobuf-mode magit json-mode flymake-yaml flymake-python-pyflakes flymake-go flymake-cursor coffee-mode blacken))
+   '(toml-mode lsp-pyright eglot-tempel typescript-mode flycheck-mypy flycheck flycheck-go go-flycheck flycheck-pyflakes go-mode prettier-js elpy isortify company-jedi yaml-mode transient python-mode python py-autopep8 protobuf-mode magit json-mode flymake-yaml flymake-python-pyflakes flymake-go flymake-cursor coffee-mode blacken))
  '(py--delete-temp-file-delay 0.1)
  '(py-paragraph-re "*")
  '(sentence-end-double-space nil)
