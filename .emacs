@@ -138,7 +138,7 @@
  '(highlight-beyond-fill-column t)
  '(inhibit-startup-screen t)
  '(package-selected-packages
-   '(zzz-to-char editorconfig toml-mode lsp-pyright eglot-tempel typescript-mode flycheck-mypy flycheck flycheck-go go-flycheck flycheck-pyflakes go-mode prettier-js elpy isortify company-jedi yaml-mode transient python-mode python py-autopep8 protobuf-mode magit json-mode flymake-yaml flymake-python-pyflakes flymake-go flymake-cursor coffee-mode blacken))
+   '(copilot ivy zzz-to-char editorconfig toml-mode lsp-pyright eglot-tempel typescript-mode flycheck-mypy flycheck flycheck-go go-flycheck flycheck-pyflakes go-mode prettier-js elpy isortify company-jedi yaml-mode transient python-mode python py-autopep8 protobuf-mode magit json-mode flymake-yaml flymake-python-pyflakes flymake-go flymake-cursor coffee-mode blacken))
  '(py--delete-temp-file-delay 0.1)
  '(py-paragraph-re "*")
  '(sentence-end-double-space nil)
@@ -221,6 +221,16 @@ will be killed."
 (use-package ivy-hydra
   :ensure t)
 
+(use-package copilot
+  :ensure t
+  :bind(
+		("C-c M-f" . copilot-accept-completion-by-word)
+		("C-c C-n" . copilot-accept-completion-by-line)
+		("C-c <tab>" . copilot-accept-completion-by-paragraph)
+		; The next line will bind copilot-mode to C-c C-c
+		("C-c C-c" . copilot-mode)
+  ))
+
 ;; From https://www.masteringemacs.org/article/how-to-get-started-tree-sitter
 ;; by Mickey Petersen
 (when nil
@@ -236,7 +246,7 @@ will be killed."
 	     (make "https://github.com/alemuller/tree-sitter-make")
 	     (markdown "https://github.com/ikatyang/tree-sitter-markdown")
 	     (python "https://github.com/tree-sitter/tree-sitter-python")
-	     (toml "https://github.com/tree-sitter/tree-sitter-toml")
+	     (toml "https://github.cm/tree-sitter/tree-sitter-toml")
 	     (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
 	     (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
 	     (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
