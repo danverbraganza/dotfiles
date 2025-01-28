@@ -226,7 +226,7 @@ will be killed."
   :bind(
 		("C-c M-f" . copilot-accept-completion-by-word)
 		("C-c C-n" . copilot-accept-completion-by-line)
-		("C-c <tab>" . copilot-accept-completion-by-paragraph)
+		("C-c <TAB>" . copilot-accept-completion-by-paragraph)
 		; The next line will bind copilot-mode to C-c C-c
 		("C-c C-c" . copilot-mode)
   ))
