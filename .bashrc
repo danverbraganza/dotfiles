@@ -178,3 +178,11 @@ eval "$(fzf --bash)"
 [ -x /opt/homebrew/bin/brew ] && eval "$(/opt/homebrew/bin/brew shellenv)"
 # Custom AWS config file
 export AWS_CONFIG_FILE=/Users/danver.branganza/github/ordering_services/build_tools/aws_configs/cloud_config
+
+# Start the SSH agent if not running
+if ! pgrep -u "$USER" ssh-agent > /dev/null; then
+    eval "$(ssh-agent -s)"
+fi
+
+ssh-add
+[ -f personal_github_ed25519 ] && ssh-add ~/.ssh/personal_github_ed25519
