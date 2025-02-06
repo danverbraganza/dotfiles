@@ -1,8 +1,10 @@
 ;;; .emacs --- Danver Braganza's Emacs file
 ;;; Just my local emacs file
 
-(setq package-archives '(("marmalade" . "https://marmalade-repo.org/packages/")
-                         ("melpa" . "https://melpa.org/packages/")))
+(setq package-archives '(
+						 ("melpa" . "https://melpa.org/packages/")
+                         ("gnu" . "https://elpa.gnu.org/packages/")
+))
 
 (require 'package)
 ;; Added by Package.el.  This must come before configurations of
@@ -30,6 +32,11 @@
     (python-tab-width 4)
     (python-indent 4)
     (python-shell-interpreter "python-3")
+)
+
+(with-eval-after-load 'python
+  (define-key python-mode-map (kbd "C-c C-c") nil)
+  (define-key python-mode-map (kbd "C-c C-<TAB>") nil)
 )
 
 (setq-default indent-tabs-mode t)

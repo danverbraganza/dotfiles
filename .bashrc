@@ -184,5 +184,5 @@ if ! pgrep -u "$USER" ssh-agent > /dev/null; then
     eval "$(ssh-agent -s)"
 fi
 
-ssh-add
+echo "" | setsid ssh-add >/dev/null 2>&1
 [ -f personal_github_ed25519 ] && ssh-add ~/.ssh/personal_github_ed25519
