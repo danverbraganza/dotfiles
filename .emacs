@@ -145,7 +145,7 @@
  '(highlight-beyond-fill-column t)
  '(inhibit-startup-screen t)
  '(package-selected-packages
-   '(copilot ivy zzz-to-char editorconfig toml-mode lsp-pyright eglot-tempel typescript-mode flycheck-mypy flycheck flycheck-go go-flycheck flycheck-pyflakes go-mode prettier-js elpy isortify company-jedi yaml-mode transient python-mode python py-autopep8 protobuf-mode magit json-mode flymake-yaml flymake-python-pyflakes flymake-go flymake-cursor coffee-mode blacken))
+   '(tree-sitter-indent tree-sitter-langs tree-sitter copilot ivy zzz-to-char editorconfig toml-mode lsp-pyright eglot-tempel typescript-mode flycheck-mypy flycheck flycheck-go go-flycheck flycheck-pyflakes go-mode prettier-js elpy isortify company-jedi yaml-mode transient python-mode python py-autopep8 protobuf-mode magit json-mode flymake-yaml flymake-python-pyflakes flymake-go flymake-cursor coffee-mode blacken))
  '(py--delete-temp-file-delay 0.1)
  '(py-paragraph-re "*")
  '(sentence-end-double-space nil)
@@ -237,6 +237,8 @@ will be killed."
 		; The next line will bind copilot-mode to C-c C-c
 		("C-c C-c" . copilot-mode)
   ))
+
+(setq gptel-api-key (getenv "OPENAI_API_KEY"))
 
 ;; From https://www.masteringemacs.org/article/how-to-get-started-tree-sitter
 ;; by Mickey Petersen
