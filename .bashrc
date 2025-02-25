@@ -140,6 +140,7 @@ alias node='nodejs'
 #export DOCKER_HOST="unix://run/docker.sock"
 alias awsume=". awsume"
 alias emasc=emacs
+[ -f ~/.creds] && . ~/.creds
 
 export GIT_PS1_SHOWDIRTYSTATE=1
 export GIT_PS1_SHOWSTASHSTATE=1
