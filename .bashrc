@@ -140,7 +140,7 @@ alias node='nodejs'
 #export DOCKER_HOST="unix://run/docker.sock"
 alias awsume=". awsume"
 alias emasc=emacs
-[ -f ~/.creds] && . ~/.creds
+[ -f ~/.creds ] && . ~/.creds
 
 export GIT_PS1_SHOWDIRTYSTATE=1
 export GIT_PS1_SHOWSTASHSTATE=1
@@ -187,3 +187,8 @@ fi
 
 echo "" | setsid ssh-add >/dev/null 2>&1
 [ -f personal_github_ed25519 ] && ssh-add ~/.ssh/personal_github_ed25519
+
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init - bash)"
+eval "$(pyenv virtualenv-init -)"
