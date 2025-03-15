@@ -189,3 +189,4 @@ echo "" | setsid ssh-add >/dev/null 2>&1
 [ -f personal_github_ed25519 ] && ssh-add ~/.ssh/personal_github_ed25519
 
 . "$HOME/.cargo/env"
+eval "$(uv generate-shell-completion bash)"
