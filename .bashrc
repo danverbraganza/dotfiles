@@ -188,7 +188,4 @@ fi
 echo "" | setsid ssh-add >/dev/null 2>&1
 [ -f personal_github_ed25519 ] && ssh-add ~/.ssh/personal_github_ed25519
 
-export PYENV_ROOT="$HOME/.pyenv"
-[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init - bash)"
-eval "$(pyenv virtualenv-init -)"
+. "$HOME/.cargo/env"
