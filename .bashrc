@@ -62,14 +62,14 @@ fi
 jj_prompt() {
   if jj status &>/dev/null; then
     # Get branch name (or default to 'detached')
-    jj_branch=$(jj describe --format '{branches}' 2>/dev/null)
-    [[ -z "$jj_branch" ]] && jj_branch="detached"
+    jj_branch=$(jj log -r @ -T 'coalesce(bookmarks)' 2>/dev/null | head -n 1 | sed 's/^...//')
+    [[ -z "$jj_branch" ]] && jj_branch="anonymous"
 
     # Get current commit hash (shortened)
-    jj_commit_id=$(jj show -T "commit_id.short()" 2>/dev/null)
+    jj_commit_id=$(jj log -r @ -T "commit_id.short()" 2>/dev/null | head -n 1 | sed 's/^...//')
 
     # Get commit message, and skip the first 3 characters
-    jj_commit_message=$(jj log -r @ -T "description" 2>/dev/null | head -n 1 | sed 's/^...//')
+    jj_commit_message=$(jj log -T "description" 2>/dev/null | head -n 1 | sed 's/^...//')
 
     # Return formatted prompt
     printf "\033[0;32m[jj: %s | %s] %s %s\033[0m" "$jj_branch" "$jj_commit_id" "$jj_commit_message"
