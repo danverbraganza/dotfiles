@@ -66,28 +66,13 @@ jj_prompt() {
     [[ -z "$jj_branch" ]] && jj_branch="detached"
 
     # Get current commit hash (shortened)
-    jj_commit_id=$(jj show -f --format %H 2>/dev/null | head -c 7)
+    jj_commit_id=$(jj show -T "commit_id.short()" 2>/dev/null)
 
-    # Get commit message (first line only)
-    jj_commit_message=$(jj describe --format "%s" 2>/dev/null)
-
-    # Get remote sync status
-    jj_sync_status=""
-    if jj git fetch &>/dev/null; then
-      local_commits=$(jj log -r '@' --no-graph | grep '^commit ' | wc -l)
-	  remote_commits=$(jj log -r 'refs/remotes/origin/main' --no-graph | grep '^commit ' | wc -l)
-
-      if [[ $local_commits -gt $remote_commits ]]; then
-        jj_sync_status="↑"
-      elif [[ $local_commits -lt $remote_commits ]]; then
-        jj_sync_status="↓"
-      else
-        jj_sync_status="✓"
-      fi
-    fi
+    # Get commit message, and skip the first 3 characters
+    jj_commit_message=$(jj log -r @ -T "description" 2>/dev/null | head -n 1 | sed 's/^...//')
 
     # Return formatted prompt
-    printf "\033[0;32m[jj: %s | %s] %s %s\033[0m" "$jj_branch" "$jj_commit_id" "$jj_commit_message" "$jj_sync_status"
+    printf "\033[0;32m[jj: %s | %s] %s %s\033[0m" "$jj_branch" "$jj_commit_id" "$jj_commit_message"
   fi
 }
 
