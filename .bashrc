@@ -58,14 +58,58 @@ fi
 
 [ -f ~/dotfiles/git-prompt.sh ] && . ~/dotfiles/git-prompt.sh
 
+# Function to check if we're in a Jujutsu repo and display the branch info
+jj_prompt() {
+  if jj status &>/dev/null; then
+    # Get branch name (or default to 'detached')
+    jj_branch=$(jj describe --format '{branches}' 2>/dev/null)
+    [[ -z "$jj_branch" ]] && jj_branch="detached"
+
+    # Get current commit hash (shortened)
+    jj_commit_id=$(jj show -f --format %H 2>/dev/null | head -c 7)
+
+    # Get commit message (first line only)
+    jj_commit_message=$(jj describe --format "%s" 2>/dev/null)
+
+    # Get remote sync status
+    jj_sync_status=""
+    if jj git fetch &>/dev/null; then
+      local_commits=$(jj log -r '@' --no-graph | grep '^commit ' | wc -l)
+	  remote_commits=$(jj log -r 'refs/remotes/origin/main' --no-graph | grep '^commit ' | wc -l)
+
+      if [[ $local_commits -gt $remote_commits ]]; then
+        jj_sync_status="↑"
+      elif [[ $local_commits -lt $remote_commits ]]; then
+        jj_sync_status="↓"
+      else
+        jj_sync_status="✓"
+      fi
+    fi
+
+    # Return formatted prompt
+    printf "\033[0;32m[jj: %s | %s] %s %s\033[0m" "$jj_branch" "$jj_commit_id" "$jj_commit_message" "$jj_sync_status"
+  fi
+}
+
+# Function to determine if we should use Jujutsu or Git in the prompt
+dynamic_vcs_prompt() {
+  jj_output=$(jj_prompt)
+  if [[ -n "$jj_output" ]]; then
+    echo "$jj_output"
+  else
+    # If not in a JJ repo, fallback to Git
+    __git_ps1 " (%s)"
+  fi
+}
+
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]$(__git_ps1 " (%s)")\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]$(dynamic_vcs_prompt)\$ '
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
 unset color_prompt force_color_prompt
 
-# If this is an xterm set the title to user@host:dir
+# If this is an xterm set the ttile to user@host:dir
 case "$TERM" in
 xterm*|rxvt*)
     PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"

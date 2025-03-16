@@ -1,2 +1,5 @@
 user.name = "Danver Braganza"
 user.email = "danverbraganza@gmail.com"
+
+[git]
+auto-local-branch = true
