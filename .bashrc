@@ -156,7 +156,7 @@ ulimit -u 5000
 export DEV=1
 export ANDROID_HOME=/usr/local/android/sdk
 export GOPATH=~/projects/go:~/projects
-export PATH=$PATH:/usr/local/go/bin:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:~/projects/go/bin:/home/nvader/.local/bin
+export PATH=$PATH:/usr/local/go/bin:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:~/projects/go/bin:~/.local/bin
 export EDITOR=emacs
 IGNORED()
 {
