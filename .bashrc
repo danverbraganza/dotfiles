@@ -219,3 +219,7 @@ echo "" | setsid ssh-add >/dev/null 2>&1
 
 . "$HOME/.cargo/env"
 eval "$(uv generate-shell-completion bash)"
+
+if command -v ngrok &>/dev/null; then
+	eval "$(ngrok completion)"
+fi
