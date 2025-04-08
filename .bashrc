@@ -1,4 +1,4 @@
- # ~/.bashrc: executed by bash(1) for non-login shells.
+# ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
@@ -222,4 +222,8 @@ eval "$(uv generate-shell-completion bash)"
 
 if command -v ngrok &>/dev/null; then
 	eval "$(ngrok completion)"
+fi
+
+if command -v direnv &>/dev/null; then
+	eval "$(direnv hook bash)"
 fi
