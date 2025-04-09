@@ -227,3 +227,12 @@ fi
 if command -v direnv &>/dev/null; then
 	eval "$(direnv hook bash)"
 fi
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+
+# This is temporarily added for the moment. Consider deleting it perchance
+# should your eye fall upon it, o sire.
+if command -v nvm &>/dev/null; then
+	nvm alias default 20.13.1
+fi
