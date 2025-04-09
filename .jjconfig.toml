@@ -2,7 +2,7 @@ user.name = "Danver Braganza"
 user.email = "danverbraganza@gmail.com"
 
 [git]
-auto-local-branch = true
+auto-local-bookmark = true
 
 [aliases]
 tug = ["bookmark", "move", "--from", "heads(::@- & bookmarks())", "--to", "@"]
