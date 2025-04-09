@@ -13,7 +13,8 @@
 ;; You may delete these explanatory comments.
 (package-initialize)
 
-(package-install 'use-package)
+(unless (package-installed-p 'use-package)
+  (package-install 'use-package))
 
 (use-package go-mode
   :ensure t
@@ -119,6 +120,7 @@
 
 (put 'set-goal-column 'disabled nil)
 
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -143,6 +145,8 @@
  '(tab-width 4)
  '(transient-mark-mode nil))
 
+(package-refresh-contents)
+(package-install-selected-packages)
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
