@@ -4,6 +4,9 @@ user.email = "danverbraganza@gmail.com"
 [git]
 auto-local-bookmark = true
 
+[ui]
+ignore-files = [".gitignore", "~/.gitignore"]
+
 [aliases]
 tug = ["bookmark", "move", "--from", "heads(::@- & bookmarks())", "--to", "@"]
 tug- = ["bookmark", "move", "--from", "heads(::@- & bookmarks())", "--to", "@-"]
