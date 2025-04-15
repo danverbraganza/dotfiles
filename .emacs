@@ -288,7 +288,7 @@ will be killed."
       ;; also
       (dolist (mapping
                '(
-				 ;(python-mode . python-ts-mode)
+				 (python-mode . python-ts-mode)
                  (css-mode . css-ts-mode)
                  (typescript-mode . typescript-ts-mode)
                  (js-mode . typescript-ts-mode)
@@ -321,7 +321,7 @@ will be killed."
       (lsp-keymap-prefix "C-c l")           ; Prefix for LSP actions
       (lsp-completion-provider :none)       ; Using Corfu as the provider
       (lsp-diagnostics-provider :flycheck)
-      (lsp-session-file (locate-user-emacs-file ".lsp-session"))
+      (lsp-sesion-file (locate-user-emacs-file ".lsp-session"))
       (lsp-log-io nil)                      ; IMPORTANT! Use only for debugging! Drastically affects performance
       (lsp-keep-workspace-alive nil)        ; Close LSP server if all project buffers are closed
       (lsp-idle-delay 0.5)                  ; Debounce timer for `after-change-function'
