@@ -236,3 +236,11 @@ export NVM_DIR="$HOME/.nvm"
 if command -v nvm &>/dev/null; then
 	nvm alias default 20.13.1
 fi
+
+# For interactive shells, trap SIGINT to avoid shell exit
+# Only trap on MacOs
+if [[ "$OSTYPE" == "darwin"* ]]; then
+	if [[ $- == *i* ]]; then
+		trap 'echo' SIGINT
+	fi
+fi
