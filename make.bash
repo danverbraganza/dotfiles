@@ -30,3 +30,5 @@ for file in $files; do
 done
 
 ln -s ~/dotfiles/site-lisp /usr/local/share/emacs/site-lisp
+mkdir -p ~/.config/git
+ls -s ~/dotfiles/.gitignore ~/.config/git/ignore
