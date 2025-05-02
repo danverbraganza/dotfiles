@@ -169,6 +169,7 @@ alias node='nodejs'
 #export DOCKER_HOST="unix://run/docker.sock"
 alias awsume=". awsume"
 alias emasc=emacs
+alias danver="grep danver"
 [ -f ~/.creds ] && . ~/.creds
 
 export GIT_PS1_SHOWDIRTYSTATE=1
@@ -244,3 +245,5 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 		trap 'echo' SIGINT
 	fi
 fi
+
+alias jjdirty='jj diff -f main --to @ | grep "regular file" | grep -v "^Removed regular file" | cut -d" " -f4 | tr ":" " "  | grep -e "\.py"'
