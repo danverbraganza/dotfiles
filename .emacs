@@ -138,7 +138,13 @@
  '(highlight-beyond-fill-column t)
  '(inhibit-startup-screen t)
  '(package-selected-packages
-   '(lsp-ui lsp-mode xclip tree-sitter-indent tree-sitter-langs tree-sitter copilot ivy zzz-to-char editorconfig toml-mode lsp-pyright eglot-tempel typescript-mode flycheck-mypy flycheck flycheck-go go-flycheck flycheck-pyflakes go-mode prettier-js elpy isortify company-jedi yaml-mode transient python-mode python py-autopep8 protobuf-mode magit json-mode flymake-yaml flymake-python-pyflakes flymake-go flymake-cursor coffee-mode blacken))
+   '(lsp-ui lsp-mode xclip tree-sitter-indent tree-sitter-langs tree-sitter copilot
+			ivy zzz-to-char editorconfig toml-mode lsp-pyright eglot-tempel
+			typescript-mode flycheck-mypy flycheck flycheck-go go-flycheck
+			flycheck-pyflakes go-mode prettier-js elpy isortify company-jedi
+			yaml-mode transient python-mode python py-autopep8 protobuf-mode
+			magit json-mode flymake-yaml flymake-python-pyflakes flymake-go
+			flymake-cursor coffee-mode blacken))
  '(py--delete-temp-file-delay 0.1)
  '(py-paragraph-re "*")
  '(sentence-end-double-space nil)
@@ -156,7 +162,8 @@
  '(flymake-error ((((class color)) (:background "dark magenta"))))
  '(flymake-infoline ((((class color)) (:background "grey15"))))
  '(flymake-warning ((((class color)) (:background "grey30"))))
- '(font-lock-comment-face ((t (:foreground "color-40")))))
+ '(font-lock-comment-face ((t (:foreground "green"))))
+ '(lsp-face-semhl-comment ((t nil))))
 
 (setq skeleton-pair nil)
 
@@ -225,13 +232,29 @@ will be killed."
 
 (use-package copilot
   :ensure t
-  :bind(
-		("C-c M-f" . copilot-accept-completion-by-word)
-		("C-c C-n" . copilot-accept-completion-by-line)
-		("C-c <TAB>" . copilot-accept-completion-by-paragraph)
-		; The next line will bind copilot-mode to C-c C-c
-		("C-c C-c" . copilot-mode)
-  ))
+
+  ;; ────────────────────────────────────────────────────────────
+  ;; 1.  Create an “AI” prefix map on C-c .
+  ;;     (punctuation after C-c is almost never taken)
+  ;; ────────────────────────────────────────────────────────────
+  :init
+  (define-prefix-command 'my/copilot-prefix)      ; new sparse keymap
+  (global-set-key (kbd "C-c .") 'my/copilot-prefix)
+
+  ;; ────────────────────────────────────────────────────────────
+  ;; 2.  Bind Copilot commands under that prefix
+  ;;     You can hit C-c . ? to see them if you use which-key
+  ;; ────────────────────────────────────────────────────────────
+  :config
+  (define-key my/copilot-prefix (kbd "a") #'copilot-accept-completion)           ; C-c . a
+  (define-key my/copilot-prefix (kbd "w") #'copilot-accept-completion-by-word)   ; C-c . w
+  (define-key my/copilot-prefix (kbd "l") #'copilot-accept-completion-by-line)   ; C-c . l
+  (define-key my/copilot-prefix (kbd "p") #'copilot-accept-completion-by-paragraph) ; C-c . p
+  (define-key my/copilot-prefix (kbd "n") #'copilot-next-completion)             ; C-c . n
+  (define-key my/copilot-prefix (kbd "b") #'copilot-previous-completion)         ; C-c . b (back)
+  (define-key my/copilot-prefix (kbd "c") #'copilot-clear-overlay)               ; C-c . c
+  (define-key my/copilot-prefix (kbd "t") #'copilot-mode))                       ; C-c . t (toggle)
+
 
 (setq gptel-api-key (getenv "OPENAI_API_KEY"))
 
@@ -356,6 +379,7 @@ will be killed."
       (lsp-modeline-code-actions-enable nil) ; Modeline should be relatively clean
       (lsp-modeline-diagnostics-enable nil)  ; Already supported through `flycheck'
       (lsp-modeline-workspace-status-enable nil) ; Modeline displays "LSP" when lsp-mode is enabled
+	  (lsp-pyright-auto-import-completions t)    ; ChatGPT o4 said this will enable import completions for me
       (lsp-signature-doc-lines 1)                ; Don't raise the echo area. It's distracting
       (lsp-ui-doc-use-childframe t)              ; Show docs for symbol at point
       (lsp-eldoc-render-all nil)            ; This would be very useful if it would respect `lsp-signature-doc-lines', currently it's distracting
