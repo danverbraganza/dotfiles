@@ -11,3 +11,11 @@ ignore-files = [".gitignore", "~/.gitignore"]
 tug = ["bookmark", "move", "--from", "heads(::@- & bookmarks())", "--to", "@"]
 tug- = ["bookmark", "move", "--from", "heads(::@- & bookmarks())", "--to", "@-"]
 mine = ["bookmark", "list", "-r", "mine()"]
+pre-commit = [
+  "util",
+  "exec",
+  "--",
+  "bash",
+  "-c",
+  "jj diff -r @ --name-only --no-pager | xargs uv run pre-commit run --files"
+]
