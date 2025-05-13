@@ -45,9 +45,14 @@
 
 (use-package magit :ensure t)
 
-(use-package company-jedi :ensure t)
-
-(use-package company :ensure t)
+(use-package company
+  :ensure t
+  :diminish          ;; hide “Company” from mode‑line
+  :hook (after-init . global-company-mode)  ;; turn it on everywhere
+  :custom
+  (company-minimum-prefix-length 1)   ;; start completing after 1 char
+  (company-idle-delay 0.1)            ;; 0.1 s after you stop typing
+  (company-tooltip-align-annotations t))
 
 (use-package blacken :ensure t)
 
@@ -107,6 +112,7 @@
 )
 
 (use-package eglot :ensure t)
+(add-hook 'eglot-managed-mode-hook #'company-mode)
 
 (setq python-shell-interpreter "python3")
 
@@ -151,7 +157,9 @@
  '(tab-width 4)
  '(transient-mark-mode nil))
 
-(package-refresh-contents)
+(unless package-archive-contents
+  (package-refresh-contents))
+
 (package-install-selected-packages)
 
 (custom-set-faces
@@ -342,7 +350,7 @@ will be killed."
                js-ts-mode) . lsp))
       :custom
       (lsp-keymap-prefix "C-c l")           ; Prefix for LSP actions
-      (lsp-completion-provider :none)       ; Using Corfu as the provider
+      (lsp-completion-provider :capf)       ; Use standard completion-at-point
       (lsp-diagnostics-provider :flycheck)
       (lsp-sesion-file (locate-user-emacs-file ".lsp-session"))
       (lsp-log-io nil)                      ; IMPORTANT! Use only for debugging! Drastically affects performance

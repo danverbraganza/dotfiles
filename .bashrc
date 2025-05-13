@@ -236,6 +236,7 @@ export NVM_DIR="$HOME/.nvm"
 # should your eye fall upon it, o sire.
 if command -v nvm &>/dev/null; then
 	nvm alias default 20.13.1
+	nvm use
 fi
 
 # For interactive shells, trap SIGINT to avoid shell exit
