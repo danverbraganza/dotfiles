@@ -426,6 +426,9 @@ will be killed."
 (add-hook 'tsx-mode-hook #'lsp-deferred)  ;; For React (TSX) files
 (add-hook 'python-ts-mode-hook #'lsp-deferred)
 
+(fido-vertical-mode 1)
+(setq completion-styles '(flex))  ;; Allows searching anywhere in command names
+
 ; Enable xclip mode globally
 (use-package xclip
   :ensure t
