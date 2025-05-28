@@ -16,6 +16,59 @@
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
 
+
+;; ----------------- Vertico stack -----------------
+;; 1. Vertico: completion UI
+(use-package vertico
+  :ensure t
+  :init
+  (vertico-mode 1))
+
+;; 2. Save minibuffer history across sessions
+(use-package savehist
+  :init
+  (savehist-mode 1))
+
+;; 3. Rich annotations next to candidates
+(use-package marginalia
+  :ensure t
+  :init
+  (marginalia-mode 1))
+
+;; 4. Smarter matching style
+(use-package orderless
+  :ensure t
+  :custom
+  (completion-styles '(orderless flex basic))
+  (completion-category-defaults nil))
+
+;; 5. Consult: high-level commands
+(use-package consult
+  :ensure t
+  :bind (("C-x C-b" . consult-buffer)   ;; replaces ivy-switch-buffer
+         ("M-r"     . consult-ripgrep)  ;; replaces counsel-rg
+         ("C-x C-d" . consult-dir)      ;; dired‐like, needs consult-dir
+         ("C-s"     . consult-line))    ;; optional swiper replacement
+  :custom
+  (consult-narrow-key "<")              ;; like Ivy’s M-j
+  ;; Always ripgrep from project root if available
+  (consult-project-root-function
+   (lambda () (when (fboundp 'project-root) (project-root (project-current))))
+  ))
+
+;; 7. Embark for context actions
+(use-package embark
+  :ensure t
+  :bind (("C-." . embark-act)            ;; like Ivy hydra
+         ("C-;" . embark-dwim))
+  :init
+  (setq prefix-help-command #'embark-prefix-help-command))
+
+(use-package embark-consult
+  :ensure t
+  :after (embark consult))
+;; -------------------------------------------------
+
 (use-package go-mode
   :ensure t
   :hook
@@ -145,12 +198,14 @@
  '(inhibit-startup-screen t)
  '(package-selected-packages
    '(lsp-ui lsp-mode xclip tree-sitter-indent tree-sitter-langs tree-sitter copilot
-			ivy zzz-to-char editorconfig toml-mode lsp-pyright eglot-tempel
-			typescript-mode flycheck-mypy flycheck flycheck-go go-flycheck
-			flycheck-pyflakes go-mode prettier-js elpy isortify company-jedi
-			yaml-mode transient python-mode python py-autopep8 protobuf-mode
-			magit json-mode flymake-yaml flymake-python-pyflakes flymake-go
-			flymake-cursor coffee-mode blacken))
+                       zzz-to-char editorconfig toml-mode lsp-pyright eglot-tempel
+                       typescript-mode flycheck-mypy flycheck flycheck-go go-flycheck
+                       flycheck-pyflakes go-mode prettier-js elpy isortify company-jedi
+                       yaml-mode transient python-mode python py-autopep8 protobuf-mode
+                       magit json-mode flymake-yaml flymake-python-pyflakes flymake-go
+                       flymake-cursor coffee-mode blacken vertico orderless marginalia
+					   consult embark embark-consult consult-dir
+                       ))
  '(py--delete-temp-file-delay 0.1)
  '(py-paragraph-re "*")
  '(sentence-end-double-space nil)
@@ -198,45 +253,6 @@ will be killed."
             (message "Killed non-existing/unreadable file buffer: %s" filename))))))
   (message "Finished reverting buffers containing unmodified files."))
 
-
-;; From Martin Fowler's Blog
-(setq ivy-re-builders-alist '((t . ivy--regex-ignore-order)))
-
-(use-package ivy
-  :demand t
-  :diminish ivy-mode
-  :config
-  (ivy-mode 1)
-  (counsel-mode 1)
-  (setq ivy-use-virtual-buffers t)
-  (setq ivy-use-selectable-prompt t)
-  (setq ivy-ignore-buffers '())
-  (setq ivy-re-builders-alist '(
-                                (t . ivy--regex-ignore-order)
-                                ))
-  (setq ivy-height 10)
-  (setq counsel-find-file-at-point nil)
-  (setq ivy-count-format "(%d/%d) "))
-
-(use-package counsel
-  :ensure t
-  :bind (
-         ("C-x C-b" . ivy-switch-buffer)
-         ("M-r" . counsel-rg)
-         ("C-x C-d" . counsel-dired)
-	 ("C-x d" . dired)
-	 ("C-x b" . ivy-switch-buffer)
-         )
-  :diminish
-  :config
-  (global-set-key [remap org-set-tags-command] #'counsel-org-tag))
-
-(use-package swiper
-  :ensure t
-  :bind(("M-C-s" . swiper)))
-
-(use-package ivy-hydra
-  :ensure t)
 
 (use-package copilot
   :ensure t
@@ -425,9 +441,6 @@ will be killed."
 (add-hook 'typescript-mode-hook #'lsp-deferred)
 (add-hook 'tsx-mode-hook #'lsp-deferred)  ;; For React (TSX) files
 (add-hook 'python-ts-mode-hook #'lsp-deferred)
-
-(fido-vertical-mode 1)
-(setq completion-styles '(flex))  ;; Allows searching anywhere in command names
 
 ; Enable xclip mode globally
 (use-package xclip
