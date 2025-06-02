@@ -84,12 +84,7 @@
   :ensure t)
 
 (use-package python-mode
-  :ensure t
-  :custom
-    (python-tab-width 4)
-    (python-indent 4)
-    (python-shell-interpreter "python-3")
-)
+  :ensure t)
 
 (defun check-rust-analyzer ()
   "Check if rust-analyzer is installed and in PATH."
@@ -107,7 +102,6 @@
   :hook ((rust-ts-mode . cargo-minor-mode)
          (rust-ts-mode . check-rust-analyzer)))
 
-(add-to-list 'major-mode-remap-alist '(rust-mode . rust-ts-mode))
 (use-package cargo
   :ensure t
   :hook ((rust-ts-mode . cargo-minor-mode)))
@@ -134,6 +128,14 @@
 
 (use-package magit :ensure t)
 
+
+; Keep Copilot from interfering with company
+(defun my/copilot-tab ()
+  (interactive)
+  (or (copilot-accept-completion)
+      (company-indent-or-complete-common)))
+
+
 (use-package company
   :ensure t
   :diminish          ;; hide “Company” from mode‑line
@@ -141,7 +143,13 @@
   :custom
   (company-minimum-prefix-length 1)   ;; start completing after 1 char
   (company-idle-delay 0.1)            ;; 0.1 s after you stop typing
-  (company-tooltip-align-annotations t))
+  (company-tooltip-align-annotations t)
+  :config
+  ;; Set the keybinding once Company is fully loaded
+  (define-key company-active-map (kbd "<tab>") #'my/copilot-tab)
+  (define-key company-active-map (kbd "TAB") #'my/copilot-tab)
+  )
+
 
 (use-package blacken :ensure t)
 
@@ -163,8 +171,6 @@
 (use-package editorconfig :ensure t)
 (use-package lsp-pyright :ensure t)
 (use-package eglot-tempel :ensure t)
-(use-package flycheck-go :ensure t)
-(use-package go-flycheck :ensure t)
 (use-package elpy :ensure t)
 (use-package isortify :ensure t)
 (use-package company-jedi :ensure t)
@@ -174,10 +180,10 @@
 (use-package json-mode :ensure t)
 (use-package flymake-yaml :ensure t)
 (use-package flymake-python-pyflakes :ensure t)
-(use-package flymake-go :ensure t)
 (use-package flymake-cursor :ensure t)
 (use-package coffee-mode :ensure t)
 (use-package consult-dir :ensure t)
+
 
 (use-package flycheck-pyflakes
   :ensure t
@@ -396,6 +402,7 @@ will be killed."
                  (json-mode . json-ts-mode)
                  (js-json-mode . json-ts-mode)
                  (sh-mode . bash-ts-mode)
+				 (rust-mode . rust-ts-mode)
                  (sh-base-mode . bash-ts-mode)))
         (add-to-list 'major-mode-remap-alist mapping))
       :config
@@ -497,6 +504,10 @@ will be killed."
 (add-hook 'typescript-mode-hook #'lsp-deferred)
 (add-hook 'tsx-mode-hook #'lsp-deferred)  ;; For React (TSX) files
 (add-hook 'python-ts-mode-hook #'lsp-deferred)
+
+(use-package which-key
+  :ensure t
+  :init (which-key-mode))
 
 ; Enable xclip mode globally
 (use-package xclip
