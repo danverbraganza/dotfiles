@@ -506,3 +506,19 @@ will be killed."
   :ensure t
   :config
   (xclip-mode 1))
+
+
+;; Doom Modeline
+
+(use-package doom-modeline
+  :ensure t
+  :init (doom-modeline-mode 1)
+  :custom
+  (doom-modeline-height 25)               ;; adjust height
+  (doom-modeline-bar-width 3)
+  (doom-modeline-icon nil)                  ;; enable icons
+  (doom-modeline-buffer-file-name-style 'truncate-upto-project)
+  (doom-modeline-minor-modes nil)         ;; keep it clean
+  (doom-modeline-enable-word-count t)
+  (doom-modeline-lsp t)                   ;; show LSP status
+  (doom-modeline-vcs-max-length 20))
