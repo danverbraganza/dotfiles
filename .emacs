@@ -102,9 +102,9 @@
   :hook ((rust-ts-mode . cargo-minor-mode)
          (rust-ts-mode . check-rust-analyzer)))
 
-(use-package cargo
-  :ensure t
-  :hook ((rust-ts-mode . cargo-minor-mode)))
+
+(use-package cargo  :ensure t)
+
 
 (defun my/rust-organise-before-save ()
   (when (derived-mode-p 'rust-ts-mode)
@@ -170,17 +170,10 @@
 (use-package zzz-to-char :ensure t)
 (use-package editorconfig :ensure t)
 (use-package lsp-pyright :ensure t)
-(use-package eglot-tempel :ensure t)
-(use-package elpy :ensure t)
 (use-package isortify :ensure t)
-(use-package company-jedi :ensure t)
 (use-package transient :ensure t)
-(use-package python :ensure t)
-(use-package py-autopep8 :ensure t)
+(use-package python :ensure nil)
 (use-package json-mode :ensure t)
-(use-package flymake-yaml :ensure t)
-(use-package flymake-python-pyflakes :ensure t)
-(use-package flymake-cursor :ensure t)
 (use-package coffee-mode :ensure t)
 (use-package consult-dir :ensure t)
 
@@ -398,7 +391,6 @@ will be killed."
                  (c++-mode . c++-ts-mode)
                  (c-or-c++-mode . c-or-c++-ts-mode)
                  ;(bash-mode . bash-ts-mode)
-                 (css-mode . css-ts-mode)
                  (json-mode . json-ts-mode)
                  (js-json-mode . json-ts-mode)
                  (sh-mode . bash-ts-mode)
@@ -424,7 +416,7 @@ will be killed."
       (lsp-keymap-prefix "C-c l")           ; Prefix for LSP actions
       (lsp-completion-provider :capf)       ; Use standard completion-at-point
       (lsp-diagnostics-provider :flycheck)
-      (lsp-sesion-file (locate-user-emacs-file ".lsp-session"))
+      (lsp-session-file (locate-user-emacs-file ".lsp-session"))
       (lsp-log-io nil)                      ; IMPORTANT! Use only for debugging! Drastically affects performance
       (lsp-keep-workspace-alive nil)        ; Close LSP server if all project buffers are closed
       (lsp-idle-delay 0.5)                  ; Debounce timer for `after-change-function'
