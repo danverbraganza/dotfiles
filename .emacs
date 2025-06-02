@@ -156,6 +156,29 @@
          (tsx-ts-mode . flycheck-mode))        ;; Use tree-sitter TSX mode
 )
 
+(use-package tree-sitter-indent :ensure t)
+(use-package tree-sitter-langs :ensure t)
+(use-package tree-sitter :ensure t)
+(use-package zzz-to-char :ensure t)
+(use-package editorconfig :ensure t)
+(use-package lsp-pyright :ensure t)
+(use-package eglot-tempel :ensure t)
+(use-package flycheck-go :ensure t)
+(use-package go-flycheck :ensure t)
+(use-package elpy :ensure t)
+(use-package isortify :ensure t)
+(use-package company-jedi :ensure t)
+(use-package transient :ensure t)
+(use-package python :ensure t)
+(use-package py-autopep8 :ensure t)
+(use-package json-mode :ensure t)
+(use-package flymake-yaml :ensure t)
+(use-package flymake-python-pyflakes :ensure t)
+(use-package flymake-go :ensure t)
+(use-package flymake-cursor :ensure t)
+(use-package coffee-mode :ensure t)
+(use-package consult-dir :ensure t)
+
 (use-package flycheck-pyflakes
   :ensure t
   :after flycheck
