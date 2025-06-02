@@ -16,6 +16,7 @@
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
 
+(setq read-process-output-max (* 4 1024 1024)) ; 4 MB, good for rust-analyzer
 
 ;; ----------------- Vertico stack -----------------
 ;; 1. Vertico: completion UI
@@ -69,6 +70,10 @@
   :after (embark consult))
 ;; -------------------------------------------------
 
+(use-package yasnippet
+  :ensure t
+  :hook (prog-mode . yas-minor-mode))
+
 (use-package go-mode
   :ensure t
   :hook
@@ -80,13 +85,44 @@
 
 (use-package python-mode
   :ensure t
-  :hook
-      (python-mode . eglot-ensure)
   :custom
     (python-tab-width 4)
     (python-indent 4)
     (python-shell-interpreter "python-3")
 )
+
+(defun check-rust-analyzer ()
+  "Check if rust-analyzer is installed and in PATH."
+  (interactive)
+  (if (executable-find "rust-analyzer")
+      (message "✅ rust-analyzer is installed and in your PATH.")
+    (user-error "❌ rust-analyzer is NOT installed or not in your PATH. Run: rustup component add rust-analyzer")))
+
+(use-package rust-mode
+  :ensure t
+)
+
+(use-package rust-ts-mode
+  :ensure nil ;; rust-ts-mode is built-in with Emacs 29+
+  :hook ((rust-ts-mode . cargo-minor-mode)
+         (rust-ts-mode . check-rust-analyzer)))
+
+(add-to-list 'major-mode-remap-alist '(rust-mode . rust-ts-mode))
+(use-package cargo
+  :ensure t
+  :hook ((rust-ts-mode . cargo-minor-mode)))
+
+(defun my/rust-organise-before-save ()
+  (when (derived-mode-p 'rust-ts-mode)
+    (lsp-format-buffer)
+    (lsp-organize-imports)))
+(add-hook 'before-save-hook #'my/rust-organise-before-save)
+
+(with-eval-after-load 'rust-ts-mode
+  (define-key rust-ts-mode-map (kbd "C-c C-c") #'cargo-process-run)
+  (define-key rust-ts-mode-map (kbd "C-c C-t") #'cargo-process-test)
+  (define-key rust-ts-mode-map (kbd "C-c C-b") #'cargo-process-bench))
+
 
 (with-eval-after-load 'python
   (define-key python-mode-map (kbd "C-c C-c") nil)
@@ -144,7 +180,6 @@
   (add-to-list 'auto-mode-alist '("\\.tsx?\\'" . typescriptreact-mode))
   ;; by default, typescript-mode is mapped to the treesitter typescript parser
   ;; use our derived mode to map both .tsx AND .ts -> typescriptreact-mode -> treesitter tsx
-  (add-to-list 'tree-sitter-major-mode-language-alist '(typescriptreact-mode . tsx))
   :requires tree-sitter
 )
 
@@ -157,6 +192,7 @@
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
+
 (use-package yaml-mode :ensure t
   :mode ("\\.yml$" . yaml-mode)
   :init
@@ -164,8 +200,6 @@
     (define-key yaml-mode-map "\C-m" 'newline-and-indent))
 )
 
-(use-package eglot :ensure t)
-(add-hook 'eglot-managed-mode-hook #'company-mode)
 
 (setq python-shell-interpreter "python3")
 
@@ -196,16 +230,7 @@
  '(global-auto-revert-mode 1)
  '(highlight-beyond-fill-column t)
  '(inhibit-startup-screen t)
- '(package-selected-packages
-   '(lsp-ui lsp-mode xclip tree-sitter-indent tree-sitter-langs tree-sitter copilot
-                       zzz-to-char editorconfig toml-mode lsp-pyright eglot-tempel
-                       typescript-mode flycheck-mypy flycheck flycheck-go go-flycheck
-                       flycheck-pyflakes go-mode prettier-js elpy isortify company-jedi
-                       yaml-mode transient python-mode python py-autopep8 protobuf-mode
-                       magit json-mode flymake-yaml flymake-python-pyflakes flymake-go
-                       flymake-cursor coffee-mode blacken vertico orderless marginalia
-					   consult embark embark-consult consult-dir
-                       ))
+ '(package-selected-packages nil)
  '(py--delete-temp-file-delay 0.1)
  '(py-paragraph-re "*")
  '(sentence-end-double-space nil)
@@ -359,6 +384,7 @@ will be killed."
 (use-package lsp-mode
       :diminish "LSP"
       :ensure t
+	  :after (rust-ts-mode)           ; lsp-mode already declared earlier
       :hook ((lsp-mode . lsp-diagnostics-mode)
              (lsp-mode . lsp-enable-which-key-integration)
              ((tsx-ts-mode
@@ -414,14 +440,21 @@ will be killed."
 
 	  (setq lsp-clients-typescript-server "typescript-language-server"
 			lsp-clients-typescript-server-args '("--stdio"))
-
+	  (lsp-rust-analyzer-server-command '("rust-analyzer")) ; rustup component add rust-analyzer
+	  (lsp-rust-analyzer-cargo-watch-command "clippy")      ; show Clippy warnings live
+	  (lsp-rust-analyzer-proc-macro-enable t)
+	  (lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial") ; inlay hints
+	  :hook
+	  ((rust-ts-mode . lsp-deferred))
       :init
       (setq lsp-use-plists nil
 			lsp-clients-typescript-tsserver-executable (executable-find "typescript-language-server")))
 
+
     (use-package lsp-completion
       :no-require
       :hook ((lsp-mode . lsp-completion-mode)))
+
 
     (use-package lsp-ui
       :ensure t
