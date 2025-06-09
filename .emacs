@@ -310,7 +310,7 @@ will be killed."
   ;; ────────────────────────────────────────────────────────────
   :init
   (define-prefix-command 'my/copilot-prefix)      ; new sparse keymap
-  (global-set-key (kbd "C-c .") 'my/copilot-prefix)
+  (global-set-key (kbd "C-c '") 'my/copilot-prefix)
 
   ;; ────────────────────────────────────────────────────────────
   ;; 2.  Bind Copilot commands under that prefix
