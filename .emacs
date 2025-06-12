@@ -48,6 +48,7 @@
   :ensure t
   :bind (("C-x C-b" . consult-buffer)   ;; replaces ivy-switch-buffer
          ("M-r"     . consult-ripgrep)  ;; replaces counsel-rg
+		 ("M-f"     . consult-find)
          ("C-x C-d" . consult-dir)      ;; dired‐like, needs consult-dir
          ("C-s"     . consult-line))    ;; optional swiper replacement
   :custom
