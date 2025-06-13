@@ -112,6 +112,7 @@
     (lsp-organize-imports)))
 (add-hook 'before-save-hook #'my/rust-organise-before-save)
 
+
 (with-eval-after-load 'rust-ts-mode
   (define-key rust-ts-mode-map (kbd "C-c C-c") #'cargo-process-run)
   (define-key rust-ts-mode-map (kbd "C-c C-t") #'cargo-process-test)
@@ -362,6 +363,7 @@ will be killed."
                    (cmake "https://github.com/uyha/tree-sitter-cmake")
                    (c "https://github.com/tree-sitter/tree-sitter-c")
                    (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
+				   (rust "https://github.com/tree-sitter/tree-sitter-rust" "v0.20.4")
                    (toml "https://github.com/tree-sitter/tree-sitter-toml")
                    (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src"))
                    (typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src"))
@@ -522,3 +524,6 @@ will be killed."
   (doom-modeline-enable-word-count t)
   (doom-modeline-lsp t)                   ;; show LSP status
   (doom-modeline-vcs-max-length 20))
+
+(provide '.emacs)
+;;; .emacs ends here
