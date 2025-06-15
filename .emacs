@@ -166,12 +166,18 @@
          (tsx-ts-mode . flycheck-mode))        ;; Use tree-sitter TSX mode
 )
 
+(use-package lsp-pyright
+  :ensure t
+  :after lsp-mode
+  :custom
+  (lsp-pyright-max-file-watchers 5000)
+)
+
 (use-package tree-sitter-indent :ensure t)
 (use-package tree-sitter-langs :ensure t)
 (use-package tree-sitter :ensure t)
 (use-package zzz-to-char :ensure t)
 (use-package editorconfig :ensure t)
-(use-package lsp-pyright :ensure t)
 (use-package isortify :ensure t)
 (use-package transient :ensure t)
 (use-package python :ensure nil)
@@ -407,93 +413,95 @@ will be killed."
 ; Again, sourced from Modern Emacs Web Development
 ; https://www.ovistoica.com/blog/2024-7-05-modern-emacs-typescript-web-tsx-config#orgf6d33f7
 (use-package lsp-mode
-      :diminish "LSP"
-      :ensure t
-	  :after (rust-ts-mode)           ; lsp-mode already declared earlier
-      :hook ((lsp-mode . lsp-diagnostics-mode)
+  :diminish "LSP"
+  :ensure t
+  :after (rust-ts-mode)           ; lsp-mode already declared earlier
+  :hook ((lsp-mode . lsp-diagnostics-mode)
              (lsp-mode . lsp-enable-which-key-integration)
              ((tsx-ts-mode
                typescript-ts-mode
                js-ts-mode) . lsp))
       :custom
-      (lsp-keymap-prefix "C-c l")           ; Prefix for LSP actions
-      (lsp-completion-provider :capf)       ; Use standard completion-at-point
-      (lsp-diagnostics-provider :flycheck)
-      (lsp-session-file (locate-user-emacs-file ".lsp-session"))
-      (lsp-log-io nil)                      ; IMPORTANT! Use only for debugging! Drastically affects performance
-      (lsp-keep-workspace-alive nil)        ; Close LSP server if all project buffers are closed
-      (lsp-idle-delay 0.5)                  ; Debounce timer for `after-change-function'
-      ;; core
-      (lsp-enable-xref t)                   ; Use xref to find references
-      (lsp-auto-configure t)                ; Used to decide between current active servers
-      (lsp-eldoc-enable-hover t)            ; Display signature information in the echo area
-      (lsp-enable-dap-auto-configure t)     ; Debug support
-      (lsp-enable-file-watchers nil)
-      (lsp-enable-folding t)
-      (lsp-enable-imenu t)
-      (lsp-enable-indentation nil)          ; I use prettier
-      (lsp-enable-links t)
-      (lsp-enable-on-type-formatting nil)   ; Prettier handles this
-      (lsp-enable-suggest-server-download t) ; Useful prompt to download LSP providers
-      (lsp-enable-symbol-highlighting t)     ; Shows usages of symbol at point in the current buffer
-      (lsp-enable-text-document-color nil)   ; This is Treesitter's job
+  (lsp-keymap-prefix "C-c l")           ; Prefix for LSP actions
+  (lsp-completion-provider :capf)       ; Use standard completion-at-point
+  (lsp-diagnostics-provider :flycheck)
+  (lsp-session-file (locate-user-emacs-file ".lsp-session"))
+  (lsp-log-io nil)                      ; IMPORTANT! Use only for debugging! Drastically affects performance
+  (lsp-keep-workspace-alive nil)        ; Close LSP server if all project buffers are closed
+  (lsp-idle-delay 0.5)                  ; Debounce timer for `after-change-function'
+  ;; core
+  (lsp-enable-xref t)                   ; Use xref to find references
+  (lsp-auto-configure t)                ; Used to decide between current active servers
+  (lsp-eldoc-enable-hover t)            ; Display signature information in the echo area
+  (lsp-enable-dap-auto-configure t)     ; Debug support
+  (lsp-enable-file-watchers nil)
+  (lsp-enable-folding t)
+  (lsp-enable-imenu t)
+  (lsp-enable-indentation nil)          ; I use prettier
+  (lsp-enable-links t)
+  (lsp-enable-on-type-formatting nil)   ; Prettier handles this
+  (lsp-enable-suggest-server-download t) ; Useful prompt to download LSP providers
+  (lsp-enable-symbol-highlighting t)     ; Shows usages of symbol at point in the current buffer
+  (lsp-enable-text-document-color nil)   ; This is Treesitter's job
 
-      (lsp-ui-sideline-show-hover nil)      ; Sideline used only for diagnostics
-      (lsp-ui-sideline-diagnostic-max-lines 20) ; 20 lines since typescript errors can be quite big
-      ;; completion
-      (lsp-completion-enable t)
-      (lsp-completion-enable-additional-text-edit t) ; Ex: auto-insert an import for a completion candidate
-      (lsp-enable-snippet t)                         ; Important to provide full JSX completion
-      (lsp-completion-show-kind t)                   ; Optional
-      ;; headerline
-      (lsp-headerline-breadcrumb-enable t)  ; Optional, I like the breadcrumbs
-      (lsp-headerline-breadcrumb-enable-diagnostics nil) ; Don't make them red, too noisy
-      (lsp-headerline-breadcrumb-enable-symbol-numbers nil)
-      (lsp-headerline-breadcrumb-icons-enable nil)
-      ;; modeline
-      (lsp-modeline-code-actions-enable nil) ; Modeline should be relatively clean
-      (lsp-modeline-diagnostics-enable nil)  ; Already supported through `flycheck'
-      (lsp-modeline-workspace-status-enable nil) ; Modeline displays "LSP" when lsp-mode is enabled
-	  (lsp-pyright-auto-import-completions t)    ; ChatGPT o4 said this will enable import completions for me
-      (lsp-signature-doc-lines 1)                ; Don't raise the echo area. It's distracting
-      (lsp-ui-doc-use-childframe t)              ; Show docs for symbol at point
-      (lsp-eldoc-render-all nil)            ; This would be very useful if it would respect `lsp-signature-doc-lines', currently it's distracting
-      ;; lens
-      (lsp-lens-enable nil)                 ; Optional, I don't need it
-      ;; semantic
-      (lsp-semantic-tokens-enable nil)      ; Related to highlighting, and we defer to treesitter
+  (lsp-ui-sideline-show-hover nil)      ; Sideline used only for diagnostics
+  (lsp-ui-sideline-diagnostic-max-lines 20) ; 20 lines since typescript errors can be quite big
+  ;; completion
+  (lsp-completion-enable t)
+  (lsp-completion-enable-additional-text-edit t) ; Ex: auto-insert an import for a completion candidate
+  (lsp-enable-snippet t)                         ; Important to provide full JSX completion
+  (lsp-completion-show-kind t)                   ; Optional
+  ;; headerline
+  (lsp-headerline-breadcrumb-enable t)  ; Optional, I like the breadcrumbs
+  (lsp-headerline-breadcrumb-enable-diagnostics nil) ; Don't make them red, too noisy
+  (lsp-headerline-breadcrumb-enable-symbol-numbers nil)
+  (lsp-headerline-breadcrumb-icons-enable nil)
+  ;; modeline
+  (lsp-modeline-code-actions-enable nil) ; Modeline should be relatively clean
+  (lsp-modeline-diagnostics-enable nil)  ; Already supported through `flycheck'
+  (lsp-modeline-workspace-status-enable nil) ; Modeline displays "LSP" when lsp-mode is enabled
+  (lsp-pyright-auto-import-completions t)    ; ChatGPT o4 said this will enable import completions for me
+  (lsp-signature-doc-lines 1)                ; Don't raise the echo area. It's distracting
+  (lsp-ui-doc-use-childframe t)              ; Show docs for symbol at point
+  (lsp-eldoc-render-all nil)            ; This would be very useful if it would respect `lsp-signature-doc-lines', currently it's distracting
+  ;; lens
+  (lsp-lens-enable nil)                 ; Optional, I don't need it
+  ;; semantic
+  (lsp-semantic-tokens-enable nil)      ; Related to highlighting, and we defer to treesitter
 
-	  (setq lsp-clients-typescript-server "typescript-language-server"
-			lsp-clients-typescript-server-args '("--stdio"))
-	  (lsp-rust-analyzer-server-command '("rust-analyzer")) ; rustup component add rust-analyzer
-	  (lsp-rust-analyzer-cargo-watch-command "clippy")      ; show Clippy warnings live
-	  (lsp-rust-analyzer-proc-macro-enable t)
-	  (lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial") ; inlay hints
-	  :hook
-	  ((rust-ts-mode . lsp-deferred))
-      :init
-      (setq lsp-use-plists nil
-			lsp-clients-typescript-tsserver-executable (executable-find "typescript-language-server")))
-
-
-    (use-package lsp-completion
-      :no-require
-      :hook ((lsp-mode . lsp-completion-mode)))
+  (setq lsp-clients-typescript-server "typescript-language-server"
+		lsp-clients-typescript-server-args '("--stdio"))
+  (lsp-rust-analyzer-server-command '("rust-analyzer")) ; rustup component add rust-analyzer
+  (lsp-rust-analyzer-cargo-watch-command "clippy")      ; show Clippy warnings live
+  (lsp-rust-analyzer-proc-macro-enable t)
+  (lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial") ; inlay hints
+  :hook
+  ((rust-ts-mode . lsp-deferred))
+  :init
+  (setq lsp-use-plists nil
+		lsp-clients-typescript-tsserver-executable (executable-find "typescript-language-server")))
 
 
-    (use-package lsp-ui
-      :ensure t
-      :commands
-      (lsp-ui-doc-show
-       lsp-ui-doc-glance)
-      :bind (:map lsp-mode-map
-                  ("C-c C-d" . 'lsp-ui-doc-glance))
-	  :hook (lsp-mode . lsp-ui-mode)
-      :after (lsp-mode evil)
-      :config (setq lsp-ui-doc-enable t
-                    lsp-ui-doc-show-with-cursor nil      ; Don't show doc when cursor is over symbol - too distracting
-                    lsp-ui-doc-include-signature t       ; Show signature
-                    lsp-ui-doc-position 'at-point))
+
+
+(use-package lsp-completion
+  :no-require
+  :hook ((lsp-mode . lsp-completion-mode)))
+
+
+(use-package lsp-ui
+  :ensure t
+  :commands
+  (lsp-ui-doc-show
+   lsp-ui-doc-glance)
+  :bind (:map lsp-mode-map
+              ("C-c C-d" . 'lsp-ui-doc-glance))
+  :hook (lsp-mode . lsp-ui-mode)
+  :after (lsp-mode evil)
+  :config (setq lsp-ui-doc-enable t
+                lsp-ui-doc-show-with-cursor nil      ; Don't show doc when cursor is over symbol - too distracting
+                lsp-ui-doc-include-signature t       ; Show signature
+                lsp-ui-doc-position 'at-point))
 
 
 (add-hook 'typescript-mode-hook #'lsp-deferred)
