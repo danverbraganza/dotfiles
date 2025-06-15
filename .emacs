@@ -18,6 +18,9 @@
 
 (setq read-process-output-max (* 4 1024 1024)) ; 4 MB, good for rust-analyzer
 
+(setq lsp-enable-file-watchers t      ; Used by lsp, set this up early.
+      lsp-file-watch-threshold 5000)
+
 ;; ----------------- Vertico stack -----------------
 ;; 1. Vertico: completion UI
 (use-package vertico
@@ -480,8 +483,6 @@ will be killed."
   :init
   (setq lsp-use-plists nil
 		lsp-clients-typescript-tsserver-executable (executable-find "typescript-language-server")))
-
-
 
 
 (use-package lsp-completion
