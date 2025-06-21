@@ -49,11 +49,12 @@
 ;; 5. Consult: high-level commands
 (use-package consult
   :ensure t
-  :bind (("C-x C-b" . consult-buffer)   ;; replaces ivy-switch-buffer
-         ("M-r"     . consult-ripgrep)  ;; replaces counsel-rg
-		 ("M-f"     . consult-find)
-         ("C-x C-d" . consult-dir)      ;; dired‐like, needs consult-dir
-         ("C-s"     . consult-line))    ;; optional swiper replacement
+  :bind (("C-x C-b" . consult-buffer)
+		 ("M-r"     . consult-ripgrep)
+		 ("M-f"     . consult-fd)
+		 ("C-x C-d" . consult-dir)
+		 ("C-s"     . consult-line)
+		 ("C-x C-y" . consult-yank-from-kill-ring))
   :custom
   (consult-narrow-key "<")              ;; like Ivy’s M-j
   ;; Always ripgrep from project root if available
@@ -373,7 +374,7 @@ will be killed."
                    (cmake "https://github.com/uyha/tree-sitter-cmake")
                    (c "https://github.com/tree-sitter/tree-sitter-c")
                    (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
-				   (rust "https://github.com/tree-sitter/tree-sitter-rust" "v0.20.4")
+                                   (rust "https://github.com/tree-sitter/tree-sitter-rust" "v0.20.4")
                    (toml "https://github.com/tree-sitter/tree-sitter-toml")
                    (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src"))
                    (typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src"))
@@ -394,7 +395,7 @@ will be killed."
       ;; also
       (dolist (mapping
                '(
-				 (python-mode . python-ts-mode)
+                                 (python-mode . python-ts-mode)
                  (css-mode . css-ts-mode)
                  (typescript-mode . typescript-ts-mode)
                  (js-mode . typescript-ts-mode)
@@ -406,7 +407,7 @@ will be killed."
                  (json-mode . json-ts-mode)
                  (js-json-mode . json-ts-mode)
                  (sh-mode . bash-ts-mode)
-				 (rust-mode . rust-ts-mode)
+                                 (rust-mode . rust-ts-mode)
                  (sh-base-mode . bash-ts-mode)))
         (add-to-list 'major-mode-remap-alist mapping))
       :config
@@ -473,7 +474,7 @@ will be killed."
   (lsp-semantic-tokens-enable nil)      ; Related to highlighting, and we defer to treesitter
 
   (setq lsp-clients-typescript-server "typescript-language-server"
-		lsp-clients-typescript-server-args '("--stdio"))
+                lsp-clients-typescript-server-args '("--stdio"))
   (lsp-rust-analyzer-server-command '("rust-analyzer")) ; rustup component add rust-analyzer
   (lsp-rust-analyzer-cargo-watch-command "clippy")      ; show Clippy warnings live
   (lsp-rust-analyzer-proc-macro-enable t)
@@ -482,7 +483,7 @@ will be killed."
   ((rust-ts-mode . lsp-deferred))
   :init
   (setq lsp-use-plists nil
-		lsp-clients-typescript-tsserver-executable (executable-find "typescript-language-server")))
+        lsp-clients-typescript-tsserver-executable (executable-find "typescript-language-server")))
 
 
 (use-package lsp-completion
