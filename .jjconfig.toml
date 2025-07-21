@@ -1,5 +1,5 @@
 user.name = "Danver Braganza"
-user.email = "danverbraganza@gmail.com"
+user.email = "danver@imbue.com"
 
 [git]
 auto-local-bookmark = true
@@ -18,4 +18,12 @@ pre-commit = [
   "bash",
   "-c",
   "jj diff -r @ --name-only --no-pager | xargs uv run pre-commit run --files"
+]
+pre-push = [
+  "util",
+  "exec",
+  "--",
+  "bash",
+  "-c",
+  "jj diff --from main --to @ --name-only --no-pager | xargs uv run pre-commit run --hook-stage pre-push --files"
 ]
