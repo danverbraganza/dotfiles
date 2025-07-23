@@ -51,7 +51,7 @@
   :ensure t
   :bind (("C-x C-b" . consult-buffer)
 		 ("M-r"     . consult-ripgrep)
-		 ("M-f"     . consult-fd)
+		 ("M-a"     . consult-fd)
 		 ("C-x C-d" . consult-dir)
 		 ("C-s"     . consult-line)
 		 ("C-x C-y" . consult-yank-from-kill-ring))
@@ -519,6 +519,10 @@ will be killed."
   :ensure t
   :config
   (xclip-mode 1))
+
+
+(global-set-key (kbd "M-<up>")   #'previous-line)
+(global-set-key (kbd "M-<down>") #'next-line)
 
 
 ;; Doom Modeline
