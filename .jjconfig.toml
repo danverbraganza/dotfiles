@@ -11,6 +11,7 @@ ignore-files = [".gitignore", "~/.gitignore"]
 tug = ["bookmark", "move", "--from", "heads(::@- & bookmarks())", "--to", "@"]
 tug- = ["bookmark", "move", "--from", "heads(::@- & bookmarks())", "--to", "@-"]
 mine = ["bookmark", "list", "-r", "mine()"]
+decs = ["desc"]
 pre-commit = [
   "util",
   "exec",

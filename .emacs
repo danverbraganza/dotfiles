@@ -57,10 +57,16 @@
 		 ("C-x C-y" . consult-yank-from-kill-ring))
   :custom
   (consult-narrow-key "<")              ;; like Ivy’s M-j
-  ;; Always ripgrep from project root if available
-  (consult-project-root-function
-   (lambda () (when (fboundp 'project-root) (project-root (project-current))))
-  ))
+  ;; Project root  ➜  prefer the first‑level "sculptor" directory if it exists;
+  ;; otherwise fall back to the real project root.
+  (consult-project-function
+   (lambda (_dir)                       ; must accept one arg
+     (when-let ((root (when (fboundp 'project-root)
+                        (project-root (project-current)))))
+       (let ((sub (expand-file-name "sculptor" root)))
+         (if (file-directory-p sub) sub root)))))
+  )
+
 
 ;; 7. Embark for context actions
 (use-package embark
@@ -421,10 +427,10 @@ will be killed."
   :ensure t
   :after (rust-ts-mode)           ; lsp-mode already declared earlier
   :hook ((lsp-mode . lsp-diagnostics-mode)
-             (lsp-mode . lsp-enable-which-key-integration)
-             ((tsx-ts-mode
-               typescript-ts-mode
-               js-ts-mode) . lsp))
+         (lsp-mode . lsp-enable-which-key-integration)
+         (tsx-ts-mode . lsp-deferred)
+		 (typescript-ts-mode . lsp-deferred)
+		 )
       :custom
   (lsp-keymap-prefix "C-c l")           ; Prefix for LSP actions
   (lsp-completion-provider :capf)       ; Use standard completion-at-point
