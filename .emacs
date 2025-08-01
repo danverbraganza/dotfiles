@@ -30,6 +30,7 @@
 (save-place-mode 1)
 ;; Remember recent files for consult-recent-file
 (recentf-mode 1)
+
 ;; Auto-revert but be quiet
 (setq global-auto-revert-non-file-buffers t)
 (global-auto-revert-mode 1)
@@ -502,6 +503,7 @@ will be killed."
 
 
 (use-package prettier
+  :ensure t
   :hook ((typescript-ts-mode tsx-ts-mode json-ts-mode) . prettier-mode))
 
 
