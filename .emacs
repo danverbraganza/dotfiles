@@ -201,28 +201,6 @@
   :after flycheck
   )
 
-; TODO: mypy checks are not working
-(use-package flycheck-mypy
-  :ensure t
-  :after flycheck
-  )
-
-
-(use-package typescript-mode
-  :ensure t
-  :config
-  ;; we choose this instead of tsx-mode so that eglot can automatically figure out language for server
-  ;; see https://github.com/joaotavora/eglot/issues/624 and https://github.com/joaotavora/eglot#handling-quirky-servers
-  (define-derived-mode typescriptreact-mode typescript-mode
-    "TypeScript TSX")
-
-  ;; use our derived mode for tsx files
-  (add-to-list 'auto-mode-alist '("\\.tsx?\\'" . typescriptreact-mode))
-  ;; by default, typescript-mode is mapped to the treesitter typescript parser
-  ;; use our derived mode to map both .tsx AND .ts -> typescriptreact-mode -> treesitter tsx
-  :requires tree-sitter
-)
-
 (add-to-list 'treesit-extra-load-path "~/.emacs.d/tree-sitter")
 
 (use-package add-node-modules-path :ensure t)
@@ -401,7 +379,7 @@ will be killed."
       ;; also
       (dolist (mapping
                '(
-                                 (python-mode . python-ts-mode)
+                 (python-mode . python-ts-mode)
                  (css-mode . css-ts-mode)
                  (typescript-mode . typescript-ts-mode)
                  (js-mode . typescript-ts-mode)
@@ -425,13 +403,11 @@ will be killed."
 (use-package lsp-mode
   :diminish "LSP"
   :ensure t
-  :after (rust-ts-mode)           ; lsp-mode already declared earlier
-  :hook ((lsp-mode . lsp-diagnostics-mode)
-         (lsp-mode . lsp-enable-which-key-integration)
-         (tsx-ts-mode . lsp-deferred)
-		 (typescript-ts-mode . lsp-deferred)
-		 )
-      :custom
+  :hook ((typescript-ts-mode . lsp-deferred)
+         (tsx-ts-mode        . lsp-deferred)
+         (python-ts-mode     . lsp-deferred)
+         (rust-ts-mode       . lsp-deferred))
+  :custom
   (lsp-keymap-prefix "C-c l")           ; Prefix for LSP actions
   (lsp-completion-provider :capf)       ; Use standard completion-at-point
   (lsp-diagnostics-provider :flycheck)
@@ -478,13 +454,13 @@ will be killed."
   (lsp-lens-enable nil)                 ; Optional, I don't need it
   ;; semantic
   (lsp-semantic-tokens-enable nil)      ; Related to highlighting, and we defer to treesitter
-
-  (setq lsp-clients-typescript-server "typescript-language-server"
-                lsp-clients-typescript-server-args '("--stdio"))
   (lsp-rust-analyzer-server-command '("rust-analyzer")) ; rustup component add rust-analyzer
   (lsp-rust-analyzer-cargo-watch-command "clippy")      ; show Clippy warnings live
   (lsp-rust-analyzer-proc-macro-enable t)
   (lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial") ; inlay hints
+  (lsp-use-plists nil)
+  (lsp-clients-typescript-server "typescript-language-server")
+  (lsp-clients-typescript-server-args '("--stdio"))
   :hook
   ((rust-ts-mode . lsp-deferred))
   :init
@@ -511,10 +487,6 @@ will be killed."
                 lsp-ui-doc-include-signature t       ; Show signature
                 lsp-ui-doc-position 'at-point))
 
-
-(add-hook 'typescript-mode-hook #'lsp-deferred)
-(add-hook 'tsx-mode-hook #'lsp-deferred)  ;; For React (TSX) files
-(add-hook 'python-ts-mode-hook #'lsp-deferred)
 
 (use-package which-key
   :ensure t
