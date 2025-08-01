@@ -6,6 +6,16 @@
                          ("gnu" . "https://elpa.gnu.org/packages/")
 ))
 
+(setq read-process-output-max (* 4 1024 1024)) ; 4 MB, good for rust-analyzer
+
+(setq lsp-enable-file-watchers t      ; Used by lsp, set this up early.
+      lsp-file-watch-threshold 5000)
+
+(setq-default indent-tabs-mode t)
+(setq-default tab-width 4)
+(setq skeleton-pair nil)
+
+
 (require 'package)
 ;; Added by Package.el.  This must come before configurations of
 ;; installed packages.  Don't delete this line.  If you don't want it,
@@ -16,10 +26,7 @@
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
 
-(setq read-process-output-max (* 4 1024 1024)) ; 4 MB, good for rust-analyzer
 
-(setq lsp-enable-file-watchers t      ; Used by lsp, set this up early.
-      lsp-file-watch-threshold 5000)
 
 ;; ----------------- Vertico stack -----------------
 ;; 1. Vertico: completion UI
@@ -94,8 +101,14 @@
 (use-package toml-mode
   :ensure t)
 
-(use-package python-mode
-  :ensure t)
+(use-package python
+  :ensure t
+  :hook ((python-ts-base-mode . lsp-deferred)
+         (python-ts-base-mode . flycheck-mode)
+         (python-ts-base-mode . blacken-mode))
+  :config
+  (setq python-shell-interpreter "python3")
+)
 
 (defun check-rust-analyzer ()
   "Check if rust-analyzer is installed and in PATH."
@@ -135,8 +148,6 @@
   (define-key python-mode-map (kbd "C-c C-<TAB>") nil)
 )
 
-(setq-default indent-tabs-mode t)
-(setq-default tab-width 4)
 
 (use-package magit :ensure t)
 
@@ -219,8 +230,6 @@
 )
 
 
-(setq python-shell-interpreter "python3")
-
 (use-package protobuf-mode :ensure t
   :mode ("\\.proto$" . protobuf-mode))
 
@@ -271,7 +280,6 @@
  '(font-lock-comment-face ((t (:foreground "green"))))
  '(lsp-face-semhl-comment ((t nil))))
 
-(setq skeleton-pair nil)
 
 (defun revert-all-file-buffers ()
   "Refresh all open file buffers without confirmation.
