@@ -26,6 +26,13 @@
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
 
+;; Save place in files
+(save-place-mode 1)
+;; Remember recent files for consult-recent-file
+(recentf-mode 1)
+;; Auto-revert but be quiet
+(setq global-auto-revert-non-file-buffers t)
+(global-auto-revert-mode 1)
 
 
 ;; ----------------- Vertico stack -----------------
@@ -177,8 +184,6 @@
 (use-package blacken :ensure t)
 
 (use-package helm-swoop :ensure t)
-
-(use-package prettier-js :ensure t)
 
 (use-package flycheck
   :ensure t
@@ -494,6 +499,10 @@ will be killed."
                 lsp-ui-doc-show-with-cursor nil      ; Don't show doc when cursor is over symbol - too distracting
                 lsp-ui-doc-include-signature t       ; Show signature
                 lsp-ui-doc-position 'at-point))
+
+
+(use-package prettier
+  :hook ((typescript-ts-mode tsx-ts-mode json-ts-mode) . prettier-mode))
 
 
 (use-package which-key
