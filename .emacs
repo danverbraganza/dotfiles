@@ -537,5 +537,9 @@ will be killed."
   (doom-modeline-lsp t)                   ;; show LSP status
   (doom-modeline-vcs-max-length 20))
 
+(use-package just-mode
+  :ensure t
+)
+
 (provide '.emacs)
 ;;; .emacs ends here
