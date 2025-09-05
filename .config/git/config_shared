@@ -1,0 +1,3 @@
+# Shared configuration for git
+[push]
+    autoSetupRemote = true

@@ -11,7 +11,7 @@
 ########## Variables
 
 olddir=~/dotfiles_old             # old dotfiles backup directory
-files=".bashrc .bash_profile .emacs .gitignore .agignore .config/awesome/rc.lua git-prompt.sh .inputrc .eslintrc .jjconfig.toml" # list of files/folders to symlink in homedir
+files=".bashrc .bash_profile .emacs .gitignore .agignore .config/awesome/rc.lua .config/git/config_shared git-prompt.sh .inputrc .eslintrc .jjconfig.toml" # list of files/folders to symlink in homedir
 
 ##########
 
@@ -32,3 +32,11 @@ done
 ln -s ~/dotfiles/site-lisp /usr/local/share/emacs/site-lisp
 mkdir -p ~/.config/git
 ls -s ~/dotfiles/.gitignore ~/.config/git/ignore
+
+# If ~/.gitconfig does not end with an include statement for the shared config, add it.
+if ! grep -q "\[include\]" ~/.gitconfig; then
+	echo "Adding include statement to ~/.gitconfig"
+	echo "" >> ~/.gitconfig
+	echo "[include]" >> ~/.gitconfig
+	echo "    path = ~/.config/git/config_shared" >> ~/.gitconfig
+fi
