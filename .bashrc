@@ -156,7 +156,7 @@ ulimit -u 5000
 export DEV=1
 export ANDROID_HOME=/usr/local/android/sdk
 export GOPATH=~/projects/go:~/projects
-export PATH=$PATH:/usr/local/go/bin:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:~/projects/go/bin:~/.local/bin
+export PATH=$PATH:/usr/local/go/bin:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:~/projects/go/bin:~/.local/bin:~/.cargo/bin
 export EDITOR=emacs
 IGNORED()
 {
@@ -250,3 +250,4 @@ fi
 alias vogin="vault login -method oidc"
 
 alias jjdirty='jj diff -f main --to @ | grep "regular file" | grep -v "^Removed regular file" | cut -d" " -f4 | tr ":" " "  | grep -e "\.py"'
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
