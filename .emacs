@@ -539,7 +539,17 @@ will be killed."
 
 (use-package just-mode
   :ensure t
-)
+  :hook
+  ;; ensure just-mode uses spaces, not tabs
+  (just-mode . (lambda ()
+                 (setq indent-tabs-mode nil
+                       tab-width 4)))
+  ;; add a buffer-local before-save hook to untabify
+  (just-mode . (lambda ()
+                 (add-hook 'before-save-hook #'untabify nil t))))
+
+
+
 
 (provide '.emacs)
 ;;; .emacs ends here
