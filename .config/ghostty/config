@@ -1,0 +1,72 @@
+# This is the configuration file for Ghostty.
+#
+# This template file has been automatically created at the following
+# path since Ghostty couldn't find any existing config files on your system:
+#
+#   /Users/danver/Library/Application Support/com.mitchellh.ghostty/config
+#
+# The template does not set any default options, since Ghostty ships
+# with sensible defaults for all options. Users should only need to set
+# options that they want to change from the default.
+#
+# Run `ghostty +show-config --default --docs` to view a list of
+# all available config options and their default values.
+#
+# Additionally, each config option is also explained in detail
+# on Ghostty's website, at https://ghostty.org/docs/config.
+
+# Config syntax crash course
+# ==========================
+# # The config file consists of simple key-value pairs,
+# # separated by equals signs.
+# font-family = Iosevka
+# window-padding-x = 2
+#
+# # Spacing around the equals sign does not matter.
+# # All of these are identical:
+# key=value
+# key= value
+# key =value
+# key = value
+#
+# # Any line beginning with a # is a comment. It's not possible to put
+# # a comment after a config option, since it would be interpreted as a
+# # part of the value. For example, this will have a value of "#123abc":
+# background = #123abc
+#
+# # Empty values are used to reset config keys to default.
+# key =
+#
+# # Some config options have unique syntaxes for their value,
+# # which is explained in the docs for that config option.
+# # Just for example:
+# resize-overlay-duration = 4s 200ms
+
+# 1. Colour theme
+#    Use the matching Solarized variant for each system appearance.
+theme = srcery
+
+# 2. Font
+font-family = "Source Code Pro"
+font-size   = 13
+
+# 3. Give each row a little extra breathing room.
+#    Positive numbers enlarge the cell; percentages are easiest to tweak.
+adjust-cell-height = "6%"
+
+macos-option-as-alt = true
+
+
+# Allow new tabs to have the same working directory.
+working-directory = inherit
+window-inherit-working-directory = true
+
+# remap word‑jump keys so every TUI (Emacs, readline, zsh, etc.) is happy
+keybind = alt+left=esc:b
+keybind = alt+right=esc:f
+
+# Make Ctrl+Arrows emit the usual CSI 1;5[A-D] sequences
+keybind = ctrl+up=csi:1;5A
+keybind = ctrl+down=csi:1;5B
+keybind = ctrl+right=csi:1;5C
+keybind = ctrl+left=csi:1;5D
