@@ -7,7 +7,7 @@
 ))
 
 (setq read-process-output-max (* 4 1024 1024)) ; 4 MB, good for rust-analyzer
-(global-display-line-numbers-mode 1)
+(global-display-line-numbers-mode 0) ; Disabled because Goto line is so fast
 
 (setq lsp-enable-file-watchers t      ; Used by lsp, set this up early.
       lsp-file-watch-threshold 5000)
