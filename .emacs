@@ -7,13 +7,14 @@
 ))
 
 (setq read-process-output-max (* 4 1024 1024)) ; 4 MB, good for rust-analyzer
+(global-display-line-numbers-mode 1)
 
 (setq lsp-enable-file-watchers t      ; Used by lsp, set this up early.
       lsp-file-watch-threshold 5000)
 
-(setq-default indent-tabs-mode t)
+(setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
-(setq skeleton-pair nil)
+(setq-default skeleton-pair nil)
 
 
 (require 'package)
@@ -184,8 +185,6 @@
 
 (use-package blacken :ensure t)
 
-(use-package helm-swoop :ensure t)
-
 (use-package flycheck
   :ensure t
   :init (global-flycheck-mode) ;; Enable Flycheck globally
@@ -207,7 +206,6 @@
 (use-package editorconfig :ensure t)
 (use-package isortify :ensure t)
 (use-package transient :ensure t)
-(use-package python :ensure nil)
 (use-package json-mode :ensure t)
 (use-package coffee-mode :ensure t)
 (use-package consult-dir :ensure t)
@@ -239,13 +237,11 @@
 (use-package protobuf-mode :ensure t
   :mode ("\\.proto$" . protobuf-mode))
 
-(add-hook 'after-load-hook (lambda ()
-                           (setq py-indent-offset 2)
-                           (set-fill-column 80)
-                           (highlight-beyond-fill-column)))
+(add-hook 'after-init-hook (lambda ()
+                           (setq python-indent-offset 4)
+                           (setq-default fill-column 120)))
 
 (put 'set-goal-column 'disabled nil)
-
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -495,7 +491,6 @@ will be killed."
   :bind (:map lsp-mode-map
               ("C-c C-d" . 'lsp-ui-doc-glance))
   :hook (lsp-mode . lsp-ui-mode)
-  :after (lsp-mode evil)
   :config (setq lsp-ui-doc-enable t
                 lsp-ui-doc-show-with-cursor nil      ; Don't show doc when cursor is over symbol - too distracting
                 lsp-ui-doc-include-signature t       ; Show signature
