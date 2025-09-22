@@ -37,6 +37,20 @@
 (global-auto-revert-mode 1)
 
 
+;;; ─── Navigation: whitespace jumps on C-↑/↓ (with macOS TTY fallback) ─────────
+
+(defun db/forward-whitespace (_)  (interactive) (forward-whitespace 1))
+(defun db/backward-whitespace (_) (interactive) (forward-whitespace -1))
+(when (and (eq system-type 'darwin) (not (display-graphic-p)))
+  ;; If you previously mapped M-Arrows to line moves, unbind them *only here*
+  ;; so the fallback can take effect in macOS terminal without touching Linux.
+  (keymap-global-unset "M-<up>")
+  (keymap-global-unset "M-<down>")
+  ; Jump forward to next blank line
+  (global-set-key (kbd "M-<down>") (lambda () (interactive) (forward-paragraph)))
+  (global-set-key (kbd "M-<up>")   (lambda () (interactive) (backward-paragraph))))
+
+
 ;; ----------------- Vertico stack -----------------
 ;; 1. Vertico: completion UI
 (use-package vertico

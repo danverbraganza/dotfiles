@@ -65,7 +65,8 @@ window-inherit-working-directory = true
 keybind = alt+left=esc:b
 keybind = alt+right=esc:f
 
-# Make Ctrl+Arrows emit the usual CSI 1;5[A-D] sequences
+# Remap Ctrl+Arrow keys to send CSI 1;5[A-D],
+# which Emacs (and most TUI apps) interpret as C-<arrow>.
 keybind = ctrl+up=csi:1;5A
 keybind = ctrl+down=csi:1;5B
 keybind = ctrl+right=csi:1;5C
