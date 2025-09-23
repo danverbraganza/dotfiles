@@ -278,7 +278,8 @@
  '(py-paragraph-re "*")
  '(sentence-end-double-space nil)
  '(tab-width 4)
- '(transient-mark-mode nil))
+ '(transient-mark-mode t)
+)
 
 (unless package-archive-contents
   (package-refresh-contents))
@@ -295,6 +296,10 @@
  '(flymake-warning ((((class color)) (:background "grey30"))))
  '(font-lock-comment-face ((t (:foreground "green"))))
  '(lsp-face-semhl-comment ((t nil))))
+
+(set-face-attribute 'region nil
+                    :background nil
+                    :foreground nil)
 
 
 (defun revert-all-file-buffers ()
