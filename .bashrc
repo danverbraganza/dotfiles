@@ -205,8 +205,24 @@ eval "$(fzf --bash)"
 # RUN ONCE on INSTALL
 # git config --global core.excludesfile ~/.gitignore
 
-# Mac homebrew
-[ -x /opt/homebrew/bin/brew ] && eval "$(/opt/homebrew/bin/brew shellenv)"
+# Set up Homebrew depending on the architecture.
+if [ "$(uname -s)" = "Darwin" ]; then
+  # choose the correct Homebrew by architecture
+  if [ "$(uname -m)" = "arm64" ]; then
+    [ -x /opt/homebrew/bin/brew ] && eval "$(/opt/homebrew/bin/brew shellenv)"
+  else
+    [ -x /usr/local/bin/brew ] && eval "$(/usr/local/bin/brew shellenv)"
+  fi
+
+  # keep stray HOMEBREW_* from breaking things
+  unset HOMEBREW_PREFIX HOMEBREW_CELLAR HOMEBREW_REPOSITORY 2>/dev/null || true
+fi
+
+
+if command -v direnv &>/dev/null; then
+	eval "$(direnv hook bash)"
+fi
+
 # Custom AWS config file
 export AWS_CONFIG_FILE=/Users/danver.branganza/github/ordering_services/build_tools/aws_configs/cloud_config
 
@@ -223,10 +239,6 @@ eval "$(uv generate-shell-completion bash)"
 
 if command -v ngrok &>/dev/null; then
 	eval "$(ngrok completion)"
-fi
-
-if command -v direnv &>/dev/null; then
-	eval "$(direnv hook bash)"
 fi
 
 export NVM_DIR="$HOME/.nvm"
@@ -246,8 +258,6 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 		trap 'echo' SIGINT
 	fi
 fi
-
-alias vogin="vault login -method oidc"
 
 alias jjdirty='jj diff -f main --to @ | grep "regular file" | grep -v "^Removed regular file" | cut -d" " -f4 | tr ":" " "  | grep -e "\.py"'
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
