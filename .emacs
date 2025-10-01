@@ -38,9 +38,6 @@
 
 
 ;;; ─── Navigation: whitespace jumps on C-↑/↓ (with macOS TTY fallback) ─────────
-
-(defun db/forward-whitespace (_)  (interactive) (forward-whitespace 1))
-(defun db/backward-whitespace (_) (interactive) (forward-whitespace -1))
 (when (and (eq system-type 'darwin) (not (display-graphic-p)))
   ;; If you previously mapped M-Arrows to line moves, unbind them *only here*
   ;; so the fallback can take effect in macOS terminal without touching Linux.
