@@ -123,12 +123,23 @@
 
 (use-package python
   :ensure t
-  :hook ((python-ts-base-mode . lsp-deferred)
+  :preface
+  (defun danver/python-use-ty ()
+    "Prefer the ty LSP for Python in this buffer."
+    (setq-local lsp-enabled-clients '(ty)))
+  :hook ((python-ts-base-mode . danver/python-use-ty)
+         (python-ts-base-mode . lsp-deferred)
          (python-ts-base-mode . flycheck-mode)
          (python-ts-base-mode . blacken-mode))
+  :init
+  ;; If you sometimes open legacy python-mode buffers (non-tree-sitter),
+  ;; keep the same behavior there too.
+  (add-hook 'python-mode-hook
+            (lambda ()
+              (setq-local lsp-enabled-clients '(ty))))
   :config
-  (setq python-shell-interpreter "python3")
-)
+  (setq python-shell-interpreter "python3"))
+
 
 (defun check-rust-analyzer ()
   "Check if rust-analyzer is installed and in PATH."
@@ -487,11 +498,27 @@ will be killed."
   (lsp-use-plists nil)
   (lsp-clients-typescript-server "typescript-language-server")
   (lsp-clients-typescript-server-args '("--stdio"))
-  :hook
-  ((rust-ts-mode . lsp-deferred))
   :init
   (setq lsp-use-plists nil
-        lsp-clients-typescript-tsserver-executable (executable-find "typescript-language-server")))
+        lsp-clients-typescript-tsserver-executable (executable-find "typescript-language-server"))
+  :config
+  (lsp-register-client
+   (make-lsp-client
+    :new-connection (lsp-stdio-connection '("ty" "server"))
+    :activation-fn (lsp-activate-on "python")
+    :server-id 'ty
+    :priority 2
+    ;; Declarative editor settings for ty (tweak as you like)
+    :settings (lsp-ht
+               ("ty" (lsp-ht
+                      ("diagnosticMode" "workspace") ; or "openFilesOnly"
+                      ("inlayHints" (lsp-ht
+                                     ("variableTypes" t)
+                                     ("callArgumentNames" t)))
+                      ("experimental" (lsp-ht
+                                       ("rename" nil)
+                                       ("autoImport" nil))))))))
+)
 
 
 (use-package lsp-completion
