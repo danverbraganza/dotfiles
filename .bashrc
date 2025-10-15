@@ -165,7 +165,6 @@ IGNORED()
 
 highlight() { grep --color "$1\|\$"; }
 
-alias node='nodejs'
 #export DOCKER_HOST="unix://run/docker.sock"
 alias awsume=". awsume"
 alias emasc=emacs
@@ -213,11 +212,11 @@ if [ "$(uname -s)" = "Darwin" ]; then
   else
     [ -x /usr/local/bin/brew ] && eval "$(/usr/local/bin/brew shellenv)"
   fi
-
-  # keep stray HOMEBREW_* from breaking things
-  unset HOMEBREW_PREFIX HOMEBREW_CELLAR HOMEBREW_REPOSITORY 2>/dev/null || true
 fi
 
+
+abrew() { "/opt/homebrew/bin/brew" "$@"; }
+ibrew() { arch -x86_64 /usr/local/bin/brew "$@"; }
 
 if command -v direnv &>/dev/null; then
 	eval "$(direnv hook bash)"
