@@ -129,8 +129,7 @@
     (setq-local lsp-enabled-clients '(ty)))
   :hook ((python-ts-base-mode . danver/python-use-ty)
          (python-ts-base-mode . lsp-deferred)
-         (python-ts-base-mode . flycheck-mode)
-         (python-ts-base-mode . blacken-mode))
+         (python-ts-base-mode . flycheck-mode))
   :init
   ;; If you sometimes open legacy python-mode buffers (non-tree-sitter),
   ;; keep the same behavior there too.
@@ -147,6 +146,14 @@
   (if (executable-find "rust-analyzer")
       (message "✅ rust-analyzer is installed and in your PATH.")
     (user-error "❌ rust-analyzer is NOT installed or not in your PATH. Run: rustup component add rust-analyzer")))
+
+(use-package ruff-format
+  :ensure t
+  :hook ((python-mode python-ts-mode python-ts-base-mode)
+         . (lambda ()
+             ;; Ruff replaces Black + isort
+             (ruff-format-on-save-mode 1))))
+
 
 (use-package rust-mode
   :ensure t
@@ -205,8 +212,6 @@
   )
 
 
-(use-package blacken :ensure t)
-
 (use-package flycheck
   :ensure t
   :init (global-flycheck-mode) ;; Enable Flycheck globally
@@ -219,7 +224,6 @@
 (use-package tree-sitter :ensure t)
 (use-package zzz-to-char :ensure t)
 (use-package editorconfig :ensure t)
-(use-package isortify :ensure t)
 (use-package transient :ensure t)
 (use-package json-mode :ensure t)
 (use-package coffee-mode :ensure t)
@@ -264,7 +268,6 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(auto-revert-interval 1)
- '(blacken-line-length 150)
  '(coffee-tab-width 4)
  '(column-number-mode t)
  '(custom-enabled-themes '(tango-dark))
@@ -279,8 +282,7 @@
  '(py-paragraph-re "*")
  '(sentence-end-double-space nil)
  '(tab-width 4)
- '(transient-mark-mode t)
-)
+ '(transient-mark-mode t))
 
 (unless package-archive-contents
   (package-refresh-contents))
