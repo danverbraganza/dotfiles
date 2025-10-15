@@ -214,13 +214,6 @@
          (tsx-ts-mode . flycheck-mode))        ;; Use tree-sitter TSX mode
 )
 
-(use-package lsp-pyright
-  :ensure t
-  :after lsp-mode
-  :custom
-  (lsp-pyright-max-file-watchers 5000)
-)
-
 (use-package tree-sitter-indent :ensure t)
 (use-package tree-sitter-langs :ensure t)
 (use-package tree-sitter :ensure t)
@@ -434,6 +427,11 @@ will be killed."
       :config
       (os/setup-install-grammars))
 
+(use-package xref
+  :ensure nil
+  :custom
+  (xref-auto-jump-to-first-definition t)
+  (xref-auto-jump-to-first-xref t))
 
 ; Again, sourced from Modern Emacs Web Development
 ; https://www.ovistoica.com/blog/2024-7-05-modern-emacs-typescript-web-tsx-config#orgf6d33f7
@@ -444,7 +442,7 @@ will be killed."
          (tsx-ts-mode        . lsp-deferred)
          (python-ts-mode     . lsp-deferred)
          (rust-ts-mode       . lsp-deferred))
-  :custom
+ :custom
   (lsp-keymap-prefix "C-c l")           ; Prefix for LSP actions
   (lsp-completion-provider :capf)       ; Use standard completion-at-point
   (lsp-diagnostics-provider :flycheck)
@@ -483,7 +481,6 @@ will be killed."
   (lsp-modeline-code-actions-enable nil) ; Modeline should be relatively clean
   (lsp-modeline-diagnostics-enable nil)  ; Already supported through `flycheck'
   (lsp-modeline-workspace-status-enable nil) ; Modeline displays "LSP" when lsp-mode is enabled
-  (lsp-pyright-auto-import-completions t)    ; ChatGPT o4 said this will enable import completions for me
   (lsp-signature-doc-lines 1)                ; Don't raise the echo area. It's distracting
   (lsp-ui-doc-use-childframe t)              ; Show docs for symbol at point
   (lsp-eldoc-render-all nil)            ; This would be very useful if it would respect `lsp-signature-doc-lines', currently it's distracting
@@ -507,18 +504,15 @@ will be killed."
     :new-connection (lsp-stdio-connection '("ty" "server"))
     :activation-fn (lsp-activate-on "python")
     :server-id 'ty
-    :priority 2
-    ;; Declarative editor settings for ty (tweak as you like)
-    :settings (lsp-ht
-               ("ty" (lsp-ht
-                      ("diagnosticMode" "workspace") ; or "openFilesOnly"
-                      ("inlayHints" (lsp-ht
-                                     ("variableTypes" t)
-                                     ("callArgumentNames" t)))
-                      ("experimental" (lsp-ht
-                                       ("rename" nil)
-                                       ("autoImport" nil))))))))
-)
+    :priority 10
+    ;; If ty uses init options, put them here:
+    :initialization-options
+    (lambda ()
+      (ht
+       ("diagnosticMode" "workspace") ; or "openFilesOnly"
+       ("inlayHints" (ht
+                      ("variableTypes" t)
+                      ("callArgumentNames" t))))))))
 
 
 (use-package lsp-completion
@@ -585,8 +579,6 @@ will be killed."
   ;; add a buffer-local before-save hook to untabify
   (just-mode . (lambda ()
                  (add-hook 'before-save-hook #'untabify nil t))))
-
-
 
 
 (provide '.emacs)
