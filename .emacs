@@ -121,21 +121,41 @@
 (use-package toml-mode
   :ensure t)
 
+(use-package ruff-format
+  :ensure t
+  :hook ((python-mode python-ts-mode python-ts-base-mode)
+         . (lambda ()
+             (ruff-format-on-save-mode 1))))
+
 (use-package python
   :ensure t
+  :after ruff-format
   :preface
+  (defun danver/ruff-fix-after-save ()
+    "Run `ruff check --fix` for the just-saved file from project root."
+    (when buffer-file-name
+      (let* ((proj (when-let ((p (project-current)))
+                     (car (project-roots p))))
+             (default-directory (or proj default-directory)))
+        (start-process "ruff-fix" nil "ruff" "check" "--fix" "--exit-zero" buffer-file-name))))
+
+  (defun danver/python-ruff-setup ()
+    (ruff-format-on-save-mode 1)
+    (add-hook 'after-save-hook #'danver/ruff-fix-after-save nil t))
   (defun danver/python-use-ty ()
     "Prefer the ty LSP for Python in this buffer."
     (setq-local lsp-enabled-clients '(ty)))
   :hook ((python-ts-base-mode . danver/python-use-ty)
          (python-ts-base-mode . lsp-deferred)
-         (python-ts-base-mode . flycheck-mode))
+         (python-ts-base-mode . flycheck-mode)
+         (python-ts-base-mode . danver/python-ruff-setup))
   :init
   ;; If you sometimes open legacy python-mode buffers (non-tree-sitter),
   ;; keep the same behavior there too.
   (add-hook 'python-mode-hook
             (lambda ()
               (setq-local lsp-enabled-clients '(ty))))
+
   :config
   (setq python-shell-interpreter "python3"))
 
@@ -146,13 +166,6 @@
   (if (executable-find "rust-analyzer")
       (message "✅ rust-analyzer is installed and in your PATH.")
     (user-error "❌ rust-analyzer is NOT installed or not in your PATH. Run: rustup component add rust-analyzer")))
-
-(use-package ruff-format
-  :ensure t
-  :hook ((python-mode python-ts-mode python-ts-base-mode)
-         . (lambda ()
-             ;; Ruff replaces Black + isort
-             (ruff-format-on-save-mode 1))))
 
 
 (use-package rust-mode
