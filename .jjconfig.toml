@@ -28,3 +28,4 @@ pre-push = [
   "-c",
   "jj diff --from main --to @ --name-only --no-pager | xargs uv run pre-commit run --hook-stage pre-push --files"
 ]
+gpan = ["git", "push", "--allow-new"]
