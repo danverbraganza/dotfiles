@@ -1,5 +1,6 @@
 ;;; .emacs --- Danver Braganza's Emacs file
 ;;; Just my local emacs file
+(require 'cl-lib)
 
 (setq package-archives '(
 						 ("melpa" . "https://melpa.org/packages/")
@@ -442,11 +443,44 @@ will be killed."
       :config
       (os/setup-install-grammars))
 
+
+
+
+(defun danver/xref-dedup-by-line (xrefs)
+  "Return XREFS with duplicates removed by file and line."
+  (cl-delete-duplicates
+   xrefs
+   :test (lambda (a b)
+           (let* ((la (xref-item-location a))
+                  (lb (xref-item-location b)))
+             (and (equal (xref-location-group la)
+                         (xref-location-group lb))
+                  (equal (xref-location-line la)
+                         (xref-location-line lb)))))))
+
+(defun danver/xref-show-one-or-prompt (fetcher alist)
+  "If FETCHER returns one xref (after dedup), jump; if many, prompt."
+  (let* ((xrefs (funcall fetcher))
+         (uniq  (danver/xref-dedup-by-line xrefs)))
+    (cond
+     ((null uniq)
+      (message "No locations found"))
+     ((null (cdr uniq))
+      (xref-pop-to-location (car uniq)
+                            (assoc-default 'display-action alist)))
+     (t
+      (xref-show-definitions-completing-read
+       (lambda () uniq)
+       alist)))))
+
 (use-package xref
-  :ensure nil
+  :ensure nil ; built-in
   :custom
-  (xref-auto-jump-to-first-definition t)
-  (xref-auto-jump-to-first-xref t))
+  (xref-auto-jump-to-first-definition nil)
+  (xref-auto-jump-to-first-xref nil)
+  (xref-show-definitions-function #'danver/xref-show-one-or-prompt)
+  (xref-show-xrefs-function       #'danver/xref-show-one-or-prompt))
+
 
 ; Again, sourced from Modern Emacs Web Development
 ; https://www.ovistoica.com/blog/2024-7-05-modern-emacs-typescript-web-tsx-config#orgf6d33f7
