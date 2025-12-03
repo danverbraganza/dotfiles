@@ -16,6 +16,7 @@
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 (setq-default skeleton-pair nil)
+(setq next-screen-context-lines 10)
 
 
 (require 'package)
