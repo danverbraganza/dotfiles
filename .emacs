@@ -549,20 +549,61 @@ will be killed."
   (setq lsp-use-plists nil
         lsp-clients-typescript-tsserver-executable (executable-find "typescript-language-server"))
   :config
-  (lsp-register-client
+ (lsp-register-client
    (make-lsp-client
     :new-connection (lsp-stdio-connection '("ty" "server"))
     :activation-fn (lsp-activate-on "python")
     :server-id 'ty
     :priority 10
-    ;; If ty uses init options, put them here:
     :initialization-options
     (lambda ()
       (ht
-       ("diagnosticMode" "workspace") ; or "openFilesOnly"
+       ("logFile" "/tmp/ty.log")
+       ("diagnosticMode" "workspace")
        ("inlayHints" (ht
                       ("variableTypes" t)
-                      ("callArgumentNames" t))))))))
+                      ("callArgumentNames" t)))))))
+
+  ;; Ty editor settings: Enable experimental rename
+  (defconst danver/ty-lsp-settings
+    '(("ty.experimental.rename" t t))
+    "Custom LSP settings sent to the Ty language server.")
+  (lsp-register-custom-settings danver/ty-lsp-settings)
+
+  (defun danver/ty-rename (new-name)
+    "Rename symbol at point using Ty's LSP rename. Bypasses `lsp-rename`'s prepareRename handling, which currently
+    doesn't play nicely with Ty."
+    (interactive
+     (list (read-string
+            "Rename to: "
+            (thing-at-point 'symbol t))))
+    (let* ((params (list :textDocument (lsp--text-document-identifier)
+                         :position     (lsp--cur-position)
+                         :newName      new-name))
+           (raw-edit (lsp-request "textDocument/rename" params))
+           ;; Some combos of lsp-mode/json decoding seem to wrap the
+           ;; WorkspaceEdit in a one-element list, so normalize that.
+           (edit (cond
+                  ((hash-table-p raw-edit)
+                   raw-edit)
+                  ((and (consp raw-edit)
+                        (hash-table-p (car raw-edit)))
+                   (car raw-edit))
+                  (t
+                   nil))))
+      (cond
+       ;; Normal case: Ty returns a WorkspaceEdit hash-table.
+       (edit
+        (lsp--apply-workspace-edit edit)
+        (message "Ty rename → %s" new-name))
+       ;; No usable edit at all
+       (raw-edit
+        (message "Ty rename: unexpected edit %S of type %S"
+                 raw-edit (type-of raw-edit)))
+       (t
+        (message "Ty rename: no edits returned.")))))
+
+  )
 
 
 (use-package lsp-completion
