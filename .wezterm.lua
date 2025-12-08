@@ -48,4 +48,15 @@ config.keys = {
   { key = 'LeftArrow',  mods = 'CTRL', action = act.SendString('\x1b[1;5D') },
 }
 
+table.insert(config.keys, {
+  key = '-',
+  mods = 'CTRL',
+  action = act.DisableDefaultAssignment,
+})
+table.insert(config.keys, {
+  key = '-',
+  mods = 'SUPER',  -- Cmd on macOS
+  action = act.DisableDefaultAssignment,
+})
+
 return config
