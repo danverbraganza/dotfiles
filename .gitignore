@@ -1,5 +1,24 @@
+# Emacs backup files
 *~
 \#*\#
 .\#*
+
+# Python
 *.pyc
+__pycache__/
+*.pyo
+*.pyd
+
+# General backup and swap files
+*.bak
+*.swp
+*.swo
+*.tmp
+
+# Cache directories
 .cache
+.DS_Store
+
+# Editor directories
+.vscode/
+.idea/

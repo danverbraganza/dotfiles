@@ -31,7 +31,7 @@ done
 
 ln -s ~/dotfiles/site-lisp /usr/local/share/emacs/site-lisp
 mkdir -p ~/.config/git
-ls -s ~/dotfiles/.gitignore ~/.config/git/ignore
+ln -s ~/dotfiles/.gitignore ~/.config/git/ignore
 
 # If ~/.gitconfig does not end with an include statement for the shared config, add it.
 if ! grep -q "\[include\]" ~/.gitconfig; then
