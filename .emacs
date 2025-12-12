@@ -120,6 +120,9 @@
   ('before-save . 'gofmt-before-save)
 )
 
+(use-package lua-mode
+  :ensure t)
+
 (use-package toml-mode
   :ensure t)
 
@@ -299,10 +302,8 @@
  '(tab-width 4)
  '(transient-mark-mode t))
 
-(unless package-archive-contents
-  (package-refresh-contents))
-
-(package-install-selected-packages)
+;; Don't save my packages
+(setq package-save-selected-packages nil)
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
