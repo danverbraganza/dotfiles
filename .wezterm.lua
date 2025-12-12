@@ -21,11 +21,44 @@ config.line_height = 1.06
 config.send_composed_key_when_left_alt_is_pressed = false
 config.send_composed_key_when_right_alt_is_pressed = false
 
+-- Ask before pasting big chunks
+local function safe_paste(window, pane)
+  -- Grab the system clipboard
+  local clipboard = wezterm.gui.get_clipboard()
+
+  clipboard:read_text(function(text)
+    if not text or text == '' then
+      return
+    end
+
+    -- Count lines (newline count + 1)
+    local _, newlines = text:gsub('\n', '\n')
+    local lines = newlines + 1
+    local threshold = 10
+
+    if lines <= threshold then
+      -- Small paste, just do it
+      pane:paste(text)
+      return
+    end
+
+    -- Big paste: ask first
+    window:perform_action(
+      act.Confirmation {
+        message = string.format("Paste %d lines from clipboard? (>%d)", lines, threshold),
+        action = wezterm.action_callback(function(win, p)
+          -- User clicked "Yes"
+          p:paste(text)
+        end),
+        cancel = wezterm.action_callback(function() end),
+      },
+      pane
+    )
+  end)
+end
+
 -- 5. Working directory inheritance
--- Ghostty:
---   working-directory = inherit
---   window-inherit-working-directory = true
---
+
 -- In WezTerm this is the *default* as long as your shell sends OSC 7
 -- (see wezterm shell integration docs). :contentReference[oaicite:1]{index=1}
 -- No explicit config needed, but you can set default_cwd for the first window:
@@ -46,17 +79,11 @@ config.keys = {
   { key = 'DownArrow',  mods = 'CTRL', action = act.SendString('\x1b[1;5B') },
   { key = 'RightArrow', mods = 'CTRL', action = act.SendString('\x1b[1;5C') },
   { key = 'LeftArrow',  mods = 'CTRL', action = act.SendString('\x1b[1;5D') },
-}
 
-table.insert(config.keys, {
-  key = '-',
-  mods = 'CTRL',
-  action = act.DisableDefaultAssignment,
-})
-table.insert(config.keys, {
-  key = '-',
-  mods = 'SUPER',  -- Cmd on macOS
-  action = act.DisableDefaultAssignment,
-})
+  -- C-- : shrink font (WezTerm side)
+  { key = '-', mods = 'CTRL', action = act.DecreaseFontSize },
+  -- C-_ : send actual C-_ through to Emacs (undo) ASCII 0x1f
+  { key = '_', mods = 'CTRL|SHIFT', action = act.SendString('\x1f') },
+}
 
 return config
