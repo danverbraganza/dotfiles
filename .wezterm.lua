@@ -84,6 +84,11 @@ config.keys = {
   { key = '-', mods = 'CTRL', action = act.DecreaseFontSize },
   -- C-_ : send actual C-_ through to Emacs (undo) ASCII 0x1f
   { key = '_', mods = 'CTRL|SHIFT', action = act.SendString('\x1f') },
+
+  -- PageUp and PageDown should scroll by page
+  { key = 'PageUp', mods = 'NONE', action = act.ScrollByPage(-1) },
+  { key = 'PageDown', mods = 'NONE', action = act.ScrollByPage(1) },
+
 }
 
 return config
