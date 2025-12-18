@@ -147,19 +147,25 @@
   (defun danver/python-ruff-setup ()
     (ruff-format-on-save-mode 1)
     (add-hook 'after-save-hook #'danver/ruff-fix-after-save nil t))
+
   (defun danver/python-use-ty ()
-    "Prefer the ty LSP for Python in this buffer."
-    (setq-local lsp-enabled-clients '(ty)))
-  :hook ((python-ts-base-mode . danver/python-use-ty)
-         (python-ts-base-mode . lsp-deferred)
-         (python-ts-base-mode . flycheck-mode)
-         (python-ts-base-mode . danver/python-ruff-setup))
-  :init
-  ;; If you sometimes open legacy python-mode buffers (non-tree-sitter),
-  ;; keep the same behavior there too.
-  (add-hook 'python-mode-hook
-            (lambda ()
-              (setq-local lsp-enabled-clients '(ty))))
+    "Prefer ty for Python LSP in this buffer."
+    ;; NOTE: lsp-mode's built-in ty client is `ty-ls` (not `ty`).
+    (setq-local lsp-enabled-clients '(ty-ls))
+    ;; Keep other Python servers from participating in rename/requests.
+    (setq-local lsp-disabled-clients '(pyright pylsp ruff ty))
+    ;; Work around lsp-mode rename crashes triggered by prepareRename payloads.
+    (setq-local lsp-rename-use-prepare nil))
+
+  (defun danver/python-lsp-setup ()
+    (danver/python-use-ty)
+    (lsp-deferred)
+    (flycheck-mode)
+    (danver/python-ruff-setup))
+
+  :hook ((python-ts-mode . danver/python-lsp-setup)
+         (python-mode    . danver/python-lsp-setup))
+
 
   :config
   (setq python-shell-interpreter "python3"))
@@ -550,60 +556,46 @@ will be killed."
   (setq lsp-use-plists nil
         lsp-clients-typescript-tsserver-executable (executable-find "typescript-language-server"))
   :config
- (lsp-register-client
-   (make-lsp-client
-    :new-connection (lsp-stdio-connection '("ty" "server"))
-    :activation-fn (lsp-activate-on "python")
-    :server-id 'ty
-    :priority 10
-    :initialization-options
-    (lambda ()
-      (ht
-       ("logFile" "/tmp/ty.log")
-       ("diagnosticMode" "workspace")
-       ("inlayHints" (ht
-                      ("variableTypes" t)
-                      ("callArgumentNames" t)))))))
 
-  ;; Ty editor settings: Enable experimental rename
+  ;; Ty workspace settings (ty 0.0.2+)
   (defconst danver/ty-lsp-settings
-    '(("ty.experimental.rename" t t))
+    '(("ty.diagnosticMode" "workspace")
+      ("ty.inlayHints.variableTypes" t t)
+      ("ty.inlayHints.callArgumentNames" t t)
+      ("ty.completions.autoImport" t t))
     "Custom LSP settings sent to the Ty language server.")
   (lsp-register-custom-settings danver/ty-lsp-settings)
 
-  (defun danver/ty-rename (new-name)
-    "Rename symbol at point using Ty's LSP rename. Bypasses `lsp-rename`'s prepareRename handling, which currently
-    doesn't play nicely with Ty."
-    (interactive
-     (list (read-string
-            "Rename to: "
-            (thing-at-point 'symbol t))))
-    (let* ((params (list :textDocument (lsp--text-document-identifier)
-                         :position     (lsp--cur-position)
-                         :newName      new-name))
-           (raw-edit (lsp-request "textDocument/rename" params))
-           ;; Some combos of lsp-mode/json decoding seem to wrap the
-           ;; WorkspaceEdit in a one-element list, so normalize that.
-           (edit (cond
-                  ((hash-table-p raw-edit)
-                   raw-edit)
-                  ((and (consp raw-edit)
-                        (hash-table-p (car raw-edit)))
-                   (car raw-edit))
-                  (t
-                   nil))))
+  (defun danver/lsp--apply-workspace-edit-guard (orig-fn workspace-edit &optional operation)
+    (let ((op (or operation 'edit)))
       (cond
-       ;; Normal case: Ty returns a WorkspaceEdit hash-table.
-       (edit
-        (lsp--apply-workspace-edit edit)
-        (message "Ty rename → %s" new-name))
-       ;; No usable edit at all
-       (raw-edit
-        (message "Ty rename: unexpected edit %S of type %S"
-                 raw-edit (type-of raw-edit)))
-       (t
-        (message "Ty rename: no edits returned.")))))
+       ;; Most important: treat nil as "no-op" instead of crashing.
+       ((null workspace-edit)
+        (message "LSP %s: no edits returned." op)
+        nil)
 
+       ;; Defensive: sometimes the response is wrapped like (:result nil).
+       ((and (listp workspace-edit) (plist-member workspace-edit :result))
+        (let ((edit (plist-get workspace-edit :result)))
+          (if edit3
+              (funcall orig-fn edit op)
+            (message "LSP %s: server returned null edit." op)
+            nil)))
+
+       ;; Normal case: let lsp-mode do its thing.
+       (t
+        (condition-case err
+            (funcall orig-fn workspace-edit op)
+          (wrong-type-argument
+           ;; If this is the classic (hash-table-p nil), downgrade to message.
+           (if (and (eq (cadr err) 'hash-table-p)
+                    (null (cl-third err)))
+               (progn
+                 (message "LSP %s: malformed WorkspaceEdit (nil inside edit)." op)
+                 nil)
+             (signal (car err) (cdr err)))))))))
+
+    (advice-add 'lsp--apply-workspace-edit :around #'danver/lsp--apply-workspace-edit-guard)
   )
 
 
