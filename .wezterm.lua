@@ -91,4 +91,12 @@ config.keys = {
 
 }
 
+-- Update the right-status periodically
+config.status_update_interval = 1000 -- ms
+wezterm.on('update-right-status', function(window, pane)
+  -- With shell integration, pane title can reflect the active/running command
+  local title = pane:get_title()
+  window:set_right_status(title)
+end)
+
 return config
