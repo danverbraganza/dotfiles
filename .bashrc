@@ -261,4 +261,6 @@ fi
 alias jjdirty='jj diff -f main --to @ | grep "regular file" | grep -v "^Removed regular file" | cut -d" " -f4 | tr ":" " "  | grep -e "\.py"'
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-. "$HOME/.local/bin/env"
+if [ -f "$HOME/.local/bin/env" ]; then
+    . "$HOME/.local/bin/env"
+fi

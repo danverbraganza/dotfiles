@@ -5,4 +5,10 @@ if [ -f ~/.bashrc ]; then
 fi
 . "$HOME/.cargo/env"
 
-. "$HOME/.local/bin/env"
+if [ -f "$HOME/.local/bin/env" ]; then
+    . "$HOME/.local/bin/env"
+fi
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
