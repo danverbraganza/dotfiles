@@ -1,10 +1,10 @@
 use std::{
     env::home_dir,
     fs::{create_dir, create_dir_all, rename},
-    io::ErrorKind,
-    os::unix::fs::symlink,
+    io::{Error, ErrorKind},
+    os::unix::{fs::symlink, process::CommandExt},
     path::{Path, PathBuf},
-    process::exit,
+    process::{Command, exit},
 };
 use tracing::{error, info, warn};
 
@@ -48,6 +48,18 @@ fn main() {
         info!("Linking file {:?}", file);
         link_file_to_dotfiles_directory(&home_dir, &dotfiles_dir, &file).expect("a")
     }
+
+    symlink_or_warn(
+        &dotfiles_dir.join("site-lisp"),
+        &PathBuf::from("/usr/local/share/emacs/site-lisp"),
+    );
+
+    symlink_or_warn(
+        &dotfiles_dir.join(".gitignore"),
+        &home_dir.join(".config").join("git"),
+    );
+
+    let _ = Command::new("bash").arg("./append-config.sh").exec();
 }
 
 /// Creates the backup directory where old dotfiles will be moved to. If the directory already exists, it will not be
@@ -65,15 +77,7 @@ fn move_file_to_backup_directory(
     filename: &PathBuf,
 ) -> std::io::Result<()> {
     if let Err(err) = rename(home_dir.join(filename), backup_dir.join(filename)) {
-        if let Some(parent) = backup_dir.join(filename).parent() {
-            info!("Creating parent folder {:?}", parent);
-            if let Err(err) = create_dir_all(parent) {
-                warn!(
-                    "Could not create parent directory {:?} for {:?}",
-                    parent, filename
-                )
-            }
-        }
+        ensure_parent(&backup_dir.join(filename));
 
         if err.kind() == ErrorKind::NotFound {
             info!("Not found {:?}", home_dir.join(filename));
@@ -98,4 +102,23 @@ fn link_file_to_dotfiles_directory(
 ) -> anyhow::Result<()> {
     symlink(dotfiles_dir.join(filename), home_dir.join(filename))?;
     Ok(())
+}
+
+fn symlink_or_warn(origin: &PathBuf, destination: &PathBuf) {
+    ensure_parent(destination);
+    if let Err(err) = symlink(origin, destination) {
+        warn!("Failed to link sitelisp due to {:?}", err);
+    }
+}
+
+fn ensure_parent(filename: &PathBuf) {
+    if let Some(parent) = filename.parent() {
+        info!("Creating parent folder {:?}", parent);
+        if let Err(err) = create_dir_all(parent) {
+            warn!(
+                "Could not create parent directory {:?} for {:?} because {}",
+                parent, filename, err
+            )
+        }
+    }
 }
