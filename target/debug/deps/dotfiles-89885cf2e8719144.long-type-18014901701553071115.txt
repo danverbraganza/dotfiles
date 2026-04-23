@@ -1,0 +1,1 @@
+std::iter::Flatten<std::iter::FlatMap<std::vec::IntoIter<&str>, std::result::Result<std::path::PathBuf, std::convert::Infallible>, for<'a> fn(&'a str) -> std::result::Result<std::path::PathBuf, <std::path::PathBuf as std::str::FromStr>::Err> {<std::path::PathBuf as std::str::FromStr>::from_str}>>
