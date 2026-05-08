@@ -121,10 +121,10 @@
 )
 
 (use-package lua-mode
-  :ensure t)
+  :ensure t :defer t)
 
 (use-package toml-mode
-  :ensure t)
+  :ensure t :defer t)
 
 (use-package ruff-format
   :ensure t
@@ -180,8 +180,7 @@
 
 
 (use-package rust-mode
-  :ensure t
-)
+  :ensure t :defer t)
 
 (use-package rust-ts-mode
   :ensure nil ;; rust-ts-mode is built-in with Emacs 29+
@@ -189,7 +188,7 @@
          (rust-ts-mode . check-rust-analyzer)))
 
 
-(use-package cargo  :ensure t)
+(use-package cargo  :ensure t :defer t)
 
 
 (defun my/rust-organise-before-save ()
@@ -211,13 +210,13 @@
 )
 
 
-(use-package magit :ensure t)
+(use-package magit :ensure t :defer t)
 
 
 ; Keep Copilot from interfering with company
 (defun my/copilot-tab ()
   (interactive)
-  (or (copilot-accept-completion)
+  (or (and (fboundp 'copilot-accept-completion) (copilot-accept-completion))
       (company-indent-or-complete-common)))
 
 
@@ -243,15 +242,15 @@
          (tsx-ts-mode . flycheck-mode))        ;; Use tree-sitter TSX mode
 )
 
-(use-package tree-sitter-indent :ensure t)
-(use-package tree-sitter-langs :ensure t)
-(use-package tree-sitter :ensure t)
-(use-package zzz-to-char :ensure t)
-(use-package editorconfig :ensure t)
-(use-package transient :ensure t)
-(use-package json-mode :ensure t)
-(use-package coffee-mode :ensure t)
-(use-package consult-dir :ensure t)
+(use-package tree-sitter-indent :ensure t :defer t)
+(use-package tree-sitter-langs :ensure t :defer t)
+(use-package tree-sitter :ensure t :defer t)
+(use-package zzz-to-char :ensure t :defer t)
+(use-package editorconfig :ensure t :defer t)
+(use-package transient :ensure t :defer t)
+(use-package json-mode :ensure t :defer t)
+(use-package coffee-mode :ensure t :defer t)
+(use-package consult-dir :ensure t :defer t)
 
 
 (use-package flycheck-pyflakes
@@ -261,7 +260,7 @@
 
 (add-to-list 'treesit-extra-load-path "~/.emacs.d/tree-sitter")
 
-(use-package add-node-modules-path :ensure t)
+(use-package add-node-modules-path :ensure t :defer t)
 
 (add-hook 'java-mode-hook (lambda ()
                            (setq c-basic-offset 4)))
@@ -353,28 +352,19 @@ will be killed."
 
 (use-package copilot
   :ensure t
+  :commands copilot-mode
 
-  ;; ────────────────────────────────────────────────────────────
-  ;; 1.  Create an “AI” prefix map on C-c .
-  ;;     (punctuation after C-c is almost never taken)
-  ;; ────────────────────────────────────────────────────────────
   :init
-  (define-prefix-command 'my/copilot-prefix)      ; new sparse keymap
-  (global-set-key (kbd "C-c '") 'my/copilot-prefix)
+  (global-set-key (kbd "C-c ' t") #'copilot-mode)
 
-  ;; ────────────────────────────────────────────────────────────
-  ;; 2.  Bind Copilot commands under that prefix
-  ;;     You can hit C-c . ? to see them if you use which-key
-  ;; ────────────────────────────────────────────────────────────
   :config
-  (define-key my/copilot-prefix (kbd "a") #'copilot-accept-completion)           ; C-c . a
-  (define-key my/copilot-prefix (kbd "w") #'copilot-accept-completion-by-word)   ; C-c . w
-  (define-key my/copilot-prefix (kbd "l") #'copilot-accept-completion-by-line)   ; C-c . l
-  (define-key my/copilot-prefix (kbd "p") #'copilot-accept-completion-by-paragraph) ; C-c . p
-  (define-key my/copilot-prefix (kbd "n") #'copilot-next-completion)             ; C-c . n
-  (define-key my/copilot-prefix (kbd "b") #'copilot-previous-completion)         ; C-c . b (back)
-  (define-key my/copilot-prefix (kbd "c") #'copilot-clear-overlay)               ; C-c . c
-  (define-key my/copilot-prefix (kbd "t") #'copilot-mode))                       ; C-c . t (toggle)
+  (define-key copilot-completion-map (kbd "C-c ' a") #'copilot-accept-completion)
+  (define-key copilot-completion-map (kbd "C-c ' w") #'copilot-accept-completion-by-word)
+  (define-key copilot-completion-map (kbd "C-c ' l") #'copilot-accept-completion-by-line)
+  (define-key copilot-completion-map (kbd "C-c ' p") #'copilot-accept-completion-by-paragraph)
+  (define-key copilot-completion-map (kbd "C-c ' n") #'copilot-next-completion)
+  (define-key copilot-completion-map (kbd "C-c ' b") #'copilot-previous-completion)
+  (define-key copilot-completion-map (kbd "C-c ' c") #'copilot-clear-overlay))
 
 
 (setq gptel-api-key (getenv "OPENAI_API_KEY"))
@@ -577,7 +567,7 @@ will be killed."
        ;; Defensive: sometimes the response is wrapped like (:result nil).
        ((and (listp workspace-edit) (plist-member workspace-edit :result))
         (let ((edit (plist-get workspace-edit :result)))
-          (if edit3
+          (if edit
               (funcall orig-fn edit op)
             (message "LSP %s: server returned null edit." op)
             nil)))
