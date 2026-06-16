@@ -1,7 +1,7 @@
 use std::{
     env::home_dir,
     fs::{create_dir, create_dir_all, rename},
-    io::{Error, ErrorKind},
+    io::{ErrorKind},
     os::unix::{fs::symlink, process::CommandExt},
     path::{Path, PathBuf},
     process::{Command, exit},
@@ -21,6 +21,7 @@ fn main() {
         ".config/awesome/rc.lua",
         ".config/git/config_shared",
         ".config/ghostty/config",
+        ".config/ripgrep/.rgconfig",
         "git-prompt.sh",
         ".inputrc",
         ".eslintrc",
@@ -100,6 +101,8 @@ fn link_file_to_dotfiles_directory(
     dotfiles_dir: &Path,
     filename: &PathBuf,
 ) -> anyhow::Result<()> {
+    ensure_parent(&home_dir.join(filename));
+
     symlink(dotfiles_dir.join(filename), home_dir.join(filename))?;
     Ok(())
 }

@@ -12,3 +12,6 @@ fi
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# uv
+export PATH="/Users/danver/.local/bin:$PATH"

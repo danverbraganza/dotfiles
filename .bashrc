@@ -264,3 +264,8 @@ alias jjdirty='jj diff -f main --to @ | grep "regular file" | grep -v "^Removed 
 if [ -f "$HOME/.local/bin/env" ]; then
     . "$HOME/.local/bin/env"
 fi
+
+export RIPGREP_CONFIG_PATH=~/.config/ripgrep/.rgconfig
+
+# uv
+export PATH="/Users/danver/.local/bin:$PATH"
